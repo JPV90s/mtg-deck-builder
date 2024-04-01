@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MTG Deck Builder</title>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="wrapper">
+      <h1>MTG DECK BUILDER</h1>
+      <p>Explore Cards</p>
+      <label for="set-select">Select core set:</label>
+      <select name="sets" id="set-select">
+        <option value="">--Please choose an option--</option>
+        <option value="lea">Limited Edition Alpha</option>
+        <option value="leb">Limited Edition Beta</option>
+        <option value="2ed">Unlimited Edition</option>
+        <option value="3ed">Revised Edition</option>
+        <option value="4ed">Fourth Edition</option>
+        <option value="5ed">Fifth Edition</option>
+        <option value="6ed">Classic Sixth Edition</option>
+        <option value="7ed">Seventh Edition</option>
+      </select>
+      <button id="explore-set">Explore Set</button><br />
+
+      <h2 id="set-name"></h2>
+      <div class="table-container">
+        <table id="table-cards">
+          <caption>
+            List of cards
+          </caption>
+          <thead>
+            <tr>
+              <th>Card Color</th>
+              <th>Card Name</th>
+              <th>Mana Cost</th>
+              <th>CMC</th>
+              <th>Card Type</th>
+              <th>Oracle Text</th>
+              <th>Power</th>
+              <th>Toughness</th>
+              <th>Rarity</th>
+            </tr>
+          </thead>
+          <tbody id="card-display-table"></tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
