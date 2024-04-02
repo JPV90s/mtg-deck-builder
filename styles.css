@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -23,12 +25,15 @@ body {
   border-radius: 5px;
 }
 
-#explore-set {
+#explore-set,
+#display-deck-button {
   padding: 5px;
-  background-color: purple;
+  background-color: darkslateblue;
+  box-shadow: 10px 5px 5px lightgray;
   color: white;
   border-radius: 5px;
   cursor: pointer;
+  border: 2px solid black;
 }
 
 .wrapper {
@@ -36,9 +41,15 @@ body {
   margin: 20px auto;
 }
 
-table {
+#table-cards {
+  display: none;
   width: 100%;
-  border-collapse: collapse;
+  box-shadow: 10px 5px 5px lightgray;
+  border-radius: 12px 12px 0 0;
+  border: 3px solid black;
+  border-radius: 10px;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 
 th,
@@ -58,14 +69,17 @@ caption {
 }
 
 th {
-  background: hsl(0 0% 0% / 0.4);
-  vertical-align: middle;
+  background: darkslateblue;
+  color: white;
   cursor: pointer;
+  font-family: "Roboto", sans-serif;
 }
 
 td {
   vertical-align: text-top;
   text-align: justify;
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.9rem;
 }
 
 tr:nth-of-type(2n) {
@@ -74,4 +88,22 @@ tr:nth-of-type(2n) {
 
 .table-container {
   max-width: 100%;
+}
+
+#name {
+  text-align: left;
+}
+
+#card-name {
+  text-decoration: underline;
+  color: blue;
+  text-align: left;
+}
+
+#card-name:hover {
+  cursor: pointer;
+}
+
+.expanded-info-card {
+  display: flex;
 }

@@ -11,19 +11,24 @@
     <div class="wrapper">
       <h1>MTG DECK BUILDER</h1>
       <p>Explore Cards</p>
-      <label for="set-select">Select core set:</label>
+      <label for="set-select">Select set:</label>
       <select name="sets" id="set-select">
         <option value="">--Please choose an option--</option>
-        <option value="lea">Limited Edition Alpha</option>
-        <option value="leb">Limited Edition Beta</option>
-        <option value="2ed">Unlimited Edition</option>
-        <option value="3ed">Revised Edition</option>
-        <option value="4ed">Fourth Edition</option>
-        <option value="5ed">Fifth Edition</option>
-        <option value="6ed">Classic Sixth Edition</option>
-        <option value="7ed">Seventh Edition</option>
+        <option value="mkm">Murders at Karlov Manor</option>
+        <option value="lci">The Lost Caverns of Ixalan</option>
+        <option value="woe">Wilds of Eldraine</option>
+        <option value="mat">March of the Machine: The Aftermath</option>
+        <option value="mom">March of the Machine</option>
+        <option value="one">Phyrexia: All Will Be One</option>
+        <option value="bro">The Brothers' War</option>
+        <option value="dmu">Dominaria United</option>
+        <option value="snc">Streets of New Capenna</option>
+        <option value="neo">Kamigawa: Neon Dynasty</option>
+        <option value="vow">Innistrad: Crimson Vow</option>
+        <option value="mid">Innistrad: Midnight Hunt</option>
       </select>
-      <button id="explore-set">Explore Set</button><br />
+      <button id="explore-set">Explore Set</button>
+      <button id="display-deck-button">Display Deck</button><br />
 
       <h2 id="set-name"></h2>
       <div class="table-container">
@@ -35,8 +40,8 @@
             <tr>
               <th>Card Color</th>
               <th>Card Name</th>
+              <th>Mana Value</th>
               <th>Mana Cost</th>
-              <th>CMC</th>
               <th>Card Type</th>
               <th>Oracle Text</th>
               <th>Power</th>
@@ -47,6 +52,11 @@
           <tbody id="card-display-table"></tbody>
         </table>
       </div>
+      <div class="expanded-info-card">
+        <div class="card-img"></div>
+        <div class="card-info"></div>
+      </div>
+      <div class="deck-container"></div>
     </div>
   </body>
 </html>

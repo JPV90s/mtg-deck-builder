@@ -8,7 +8,6 @@ exploreSetButton.addEventListener("click", function () {
     alert("Please select a set to explore!");
     return;
   }
-
   const scryfallUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}`;
   fetchCards(scryfallUrl);
 });
@@ -23,7 +22,7 @@ function fetchCards(url) {
     })
     .then((data) => {
       displayCards(data.data);
-      console.log(data.data);
+      displayCardTable();
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -32,6 +31,24 @@ function fetchCards(url) {
     .finally(() => {
       setTimeout(() => {}, 100);
     });
+}
+
+const manaSymbols = {
+  W: "images/White_Mana.png",
+  U: "images/Blue_Mana.png",
+  B: "images/Black_Mana.png",
+  R: "images/Red_Mana.png",
+  G: "images/Green_Mana.png",
+};
+
+function displayCardTable() {
+  const tableCards = document.getElementById("table-cards");
+  tableCards.style.display = "table";
+}
+
+function hideCardTable() {
+  const tableCards = document.getElementById("table-cards");
+  tableCards.style.display = "none";
 }
 
 function displayCards(cards) {
@@ -49,58 +66,63 @@ function createCardElement(card, container) {
   const cardElement = document.createElement("tr");
   cardElement.classList.add("card");
 
+  let manaCost = "";
+  if (card.mana_cost) {
+    manaCost = card.mana_cost;
+  } else if (card.card_faces && card.card_faces[0].mana_cost) {
+    manaCost = card.card_faces[0].mana_cost;
+  }
+
+  let power = "";
+  if (card.power) {
+    power = card.power;
+  } else if (
+    card.card_faces &&
+    card.card_faces[0].power &&
+    card.card_faces[1].power
+  ) {
+    power = card.card_faces[0].power + " // " + card.card_faces[1].power;
+  }
+
+  let toughness = "";
+  if (card.toughness) {
+    toughness = card.toughness;
+  } else if (
+    card.card_faces &&
+    card.card_faces[0].toughness &&
+    card.card_faces[1].toughness
+  ) {
+    toughness =
+      card.card_faces[0].toughness + " // " + card.card_faces[1].toughness;
+  }
+
   cardElement.innerHTML = `
-    <td>${card.colors}</td>
-    <td>${card.name}</td>
-    <td>${card.mana_cost}</td>
+    <td>${
+      card.colors
+        ? card.colors
+        : card.card_faces[0].colors + " // " + card.card_faces[1].colors
+    }</td>
+    <td id="name"><a id="card-name" onclick=displayInfoCard(${card.id})>${
+    card.name
+  }</a></td>
     <td>${card.cmc}</td>
+    <td>${manaCost}</td>
     <td>${card.type_line}</td>
-    <td>${card.oracle_text}</td>
-    <td>${card.power}</td>
-    <td>${card.toughness}</td>
+    <td>${
+      card.oracle_text
+        ? card.oracle_text
+        : card.card_faces[0].oracle_text +
+          " // " +
+          card.card_faces[1].oracle_text
+    }</td>
+    <td>${power}</td>
+    <td>${toughness}</td>
     <td>${card.rarity}</td>
   `;
-
   container.appendChild(cardElement);
 }
 
-// Get all the headers
-let headers = Array.from(document.querySelectorAll("th"));
-let sortAscending = Array(headers.length).fill(true); // Keep track of the sort direction for each column
-
-// Add a click event listener to each header
-headers.forEach((header, index) => {
-  header.addEventListener("click", () => {
-    sortTable(index, sortAscending[index]);
-    sortAscending[index] = !sortAscending[index]; // Reverse the sort direction for the next click
-  });
-});
-
-function sortTable(columnIndex, ascending) {
-  let table = document.getElementById("table-cards");
-  let rows = Array.from(table.rows).slice(1); // Get all the rows, except the header
-
-  // Sort the rows based on the content of the specified column
-  rows.sort((rowA, rowB) => {
-    let a = rowA.cells[columnIndex].innerText;
-    let b = rowB.cells[columnIndex].innerText;
-
-    // If the data is numeric, convert it to a number before comparing
-    if (!isNaN(a) && !isNaN(b)) {
-      return ascending ? a - b : b - a;
-    }
-
-    // If the data is a string, compare it alphabetically
-    return ascending ? a.localeCompare(b) : b.localeCompare(a);
-  });
-
-  // Remove all rows from the table
-  while (table.rows.length > 1) {
-    table.deleteRow(1);
-  }
-
-  // Add the sorted rows back to the table
-  rows.forEach((row) => {
-    table.appendChild(row);
-  });
+function displayInfoCard(id) {
+  hideCardTable();
+  console.log(card.id);
 }
