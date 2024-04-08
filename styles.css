@@ -36,18 +36,22 @@ body {
   border: 2px solid black;
 }
 
+#explore-set:hover,
+#display-deck-button:hover {
+  background-color: blueviolet;
+}
+
 .wrapper {
   width: min(1200px, 100% - 3rem);
   margin: 20px auto;
 }
 
-#table-cards {
+#card-list-table {
   display: none;
   width: 100%;
   box-shadow: 10px 5px 5px lightgray;
   border-radius: 12px 12px 0 0;
   border: 3px solid black;
-  border-radius: 10px;
   border-collapse: separate;
   border-spacing: 0;
 }
@@ -87,23 +91,109 @@ tr:nth-of-type(2n) {
 }
 
 .table-container {
+  display: flex;
+  flex-direction: column;
   max-width: 100%;
 }
 
-#name {
+.name {
   text-align: left;
 }
 
-#card-name {
+.mana-symbol {
+  height: 16px;
+  box-shadow: none;
+}
+
+.mana-cost {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card-name {
   text-decoration: underline;
   color: blue;
   text-align: left;
 }
 
-#card-name:hover {
+.card-name:hover {
+  color: lightskyblue;
   cursor: pointer;
 }
 
+.table-number {
+  text-align: right;
+}
+
 .expanded-info-card {
+  display: none;
+  margin: 50px;
+  gap: 50px;
+}
+
+.expanded-left {
   display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 10px;
+}
+
+#card-image,
+#card-image2 {
+  height: 50vh;
+  box-shadow: 10px 5px 5px lightgray;
+  border-radius: 5px;
+}
+
+#card-image2 {
+  display: none;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(360deg);
+  }
+}
+
+.rotate {
+  animation: rotate 3s 1;
+}
+
+.add-card-deck,
+.remove-card-deck,
+.transform {
+  min-width: 30px;
+  padding: 5px;
+  border: 2px solid black;
+  border-radius: 10px;
+  box-shadow: 10px 5px 5px lightgray;
+  cursor: pointer;
+}
+
+.add-card-deck:hover {
+  background-color: #3454d1;
+  color: white;
+}
+
+.remove-card-deck:hover {
+  background-color: #d1345b;
+  color: white;
+}
+
+.transform:hover {
+  background-color: blueviolet;
+  color: white;
+}
+
+.expanded-right {
+  display: flex;
+  flex-direction: column;
+}
+
+p {
+  text-align: justify;
 }

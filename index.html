@@ -30,9 +30,9 @@
       <button id="explore-set">Explore Set</button>
       <button id="display-deck-button">Display Deck</button><br />
 
-      <h2 id="set-name"></h2>
       <div class="table-container">
-        <table id="table-cards">
+        <h2 id="set-name"></h2>
+        <table id="card-list-table">
           <caption>
             List of cards
           </caption>
@@ -47,15 +47,13 @@
               <th>Power</th>
               <th>Toughness</th>
               <th>Rarity</th>
+              <th>Add / Remove</th>
             </tr>
           </thead>
           <tbody id="card-display-table"></tbody>
         </table>
       </div>
-      <div class="expanded-info-card">
-        <div class="card-img"></div>
-        <div class="card-info"></div>
-      </div>
+      <div class="expanded-info-card"></div>
       <div class="deck-container"></div>
     </div>
   </body>
