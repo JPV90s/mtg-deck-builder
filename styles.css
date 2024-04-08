@@ -107,8 +107,7 @@ tr:nth-of-type(2n) {
 
 .mana-cost {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
 }
 
 .card-name {
@@ -127,8 +126,9 @@ tr:nth-of-type(2n) {
 }
 
 .expanded-info-card {
+  width: 50vw;
   display: none;
-  margin: 50px;
+  margin: 20px;
   gap: 50px;
 }
 
@@ -194,6 +194,8 @@ tr:nth-of-type(2n) {
   flex-direction: column;
 }
 
-p {
+.card-info-text {
+  font-family: "Open Sans", sans-serif;
+  font-size: 0.9rem;
   text-align: justify;
 }

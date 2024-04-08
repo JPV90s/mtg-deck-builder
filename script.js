@@ -131,8 +131,7 @@ function createCardElement(card, container) {
 
   let manaCost = "";
   if (card.mana_cost) {
-    const manaCostParts = card.mana_cost.split(" // "); // Split by "//"
-
+    const manaCostParts = card.mana_cost.split(" // ");
     manaCost = manaCostParts
       .map((part) => {
         const manaSymbols = part.match(/{.*?}/g);
@@ -143,7 +142,24 @@ function createCardElement(card, container) {
           )
           .join(" ");
       })
-      .join(" // "); // Join back using "//"
+      .join(" // ");
+  } else if (card.card_faces) {
+    if (card.card_faces[0].mana_cost === "") {
+      manaCost = "";
+    } else {
+      const manaCostParts = card.card_faces[0].mana_cost.split(" // ");
+      manaCost = manaCostParts
+        .map((part) => {
+          const manaSymbols = part.match(/{.*?}/g);
+          return manaSymbols
+            .map(
+              (symbol) =>
+                `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
+            )
+            .join(" ");
+        })
+        .join(" // ");
+    }
   }
 
   let power = "";
@@ -193,7 +209,9 @@ function createCardElement(card, container) {
     <td class="table-number">${power}</td>
     <td class="table-number">${toughness}</td>
     <td style="text-transform: capitalize;">${card.rarity}</td>
-    <td><button class="add-card-deck" onclick=addCardToDeck(${card})><b>+</b></button><button class="remove-card-deck"><b>-</b></button></td>
+    <td><button class="add-card-deck" id="add-card-${
+      card.id
+    }" onclick=addCardToDeck(${card})><b>+</b></button><button class="remove-card-deck"><b>-</b></button></td>
   `;
   container.appendChild(cardElement);
 }
@@ -225,7 +243,7 @@ function displayCardInfo(card, container) {
 
   let manaCost = "";
   if (card.mana_cost) {
-    const manaCostParts = card.mana_cost.split(" // "); // Split by "//"
+    const manaCostParts = card.mana_cost.split(" // ");
 
     manaCost = manaCostParts
       .map((part) => {
@@ -237,7 +255,24 @@ function displayCardInfo(card, container) {
           )
           .join(" ");
       })
-      .join(" // "); // Join back using "//"
+      .join(" // ");
+  } else if (card.card_faces) {
+    if (card.card_faces[0].mana_cost === "") {
+      manaCost = "";
+    } else {
+      const manaCostParts = card.card_faces[0].mana_cost.split(" // ");
+      manaCost = manaCostParts
+        .map((part) => {
+          const manaSymbols = part.match(/{.*?}/g);
+          return manaSymbols
+            .map(
+              (symbol) =>
+                `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
+            )
+            .join(" ");
+        })
+        .join(" // ");
+    }
   }
 
   let power = "";
@@ -277,7 +312,7 @@ function displayCardInfo(card, container) {
     alt="card-image"
     id="card-image"
   />
-  <button class="add-card-deck"><b>Add card to deck</b></button>
+  <button class="add-card-deck" id="add-card-${card.id}"><b>Add card to deck</b></button>
   <button class="remove-card-deck"><b>Remove card from deck</b></button>
   <p><b>Quantity in deck: </b>2</p>
 `;
@@ -306,19 +341,19 @@ function displayCardInfo(card, container) {
   cardRightInfo.innerHTML = `
       <div>
       <p><b>Card Name: </b></p>
-      <p>${card.name}</p>
+      <p class="card-info-text">${card.name}</p>
     </div>
     <div>
       <p><b>Mana Cost: </b></p>
-      <p>${manaCost}</p>
+      <p class="card-info-text">${manaCost}</p>
     </div>
     <div>
       <p><b>Card Type: </b></p>
-      <p>${card.type_line}</p>
+      <p class="card-info-text">${card.type_line}</p>
     </div>
     <div>
       <p><b>Card Text: </b></p>
-      <p>${
+      <p class="card-info-text">${
         card.oracle_text
           ? card.oracle_text
           : card.card_faces[0].oracle_text +
@@ -328,19 +363,23 @@ function displayCardInfo(card, container) {
     </div>
     <div>
       <p><b>Flavor Text: </b></p>
-      <p><i>${card.flavor_text ? card.flavor_text : "No flavor text"}</i></p>
+      <p class="card-info-text"><i>${
+        card.flavor_text ? card.flavor_text : "No flavor text"
+      }</i></p>
     </div>
     <div>
       <p><b>Expansion: </b></p>
-      <p>${card.set_name}</p>
+      <p class="card-info-text">${card.set_name}</p>
     </div>
     <div>
       <p><b>Rarity: </b></p>
-      <p style="text-transform: capitalize;">${card.rarity}</p>
+      <p class="card-info-text" style="text-transform: capitalize;">${
+        card.rarity
+      }</p>
     </div>
     <div>
       <p><b>Artist: </b></p>
-      <p>${card.artist}</p>
+      <p class="card-info-text">${card.artist}</p>
     </div>
   `;
 
