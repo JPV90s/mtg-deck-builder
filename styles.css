@@ -96,12 +96,20 @@ tr:nth-of-type(2n) {
   max-width: 100%;
 }
 
+.card-color {
+  display: flex;
+}
+
 .name {
   text-align: left;
 }
 
+.alchemy-sign {
+  height: 12px;
+}
+
 .mana-symbol {
-  height: 16px;
+  height: 14px;
   box-shadow: none;
 }
 
@@ -139,7 +147,7 @@ tr:nth-of-type(2n) {
   gap: 10px;
 }
 
-#card-image,
+#card-image1,
 #card-image2 {
   height: 50vh;
   box-shadow: 10px 5px 5px lightgray;

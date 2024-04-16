@@ -6,7 +6,7 @@ const expandedInfoCard = document.querySelector(".expanded-info-card");
 const cardName = document.querySelectorAll(".card-name");
 const cardSetTitle = document.getElementById("set-name");
 
-const deck = [];
+let deck = [];
 
 const manaSymbolImages = {
   "{W}": "images/manaWhite.png",
@@ -14,6 +14,7 @@ const manaSymbolImages = {
   "{B}": "images/manaBlack.png",
   "{R}": "images/manaRed.png",
   "{G}": "images/manaGreen.png",
+  "{C}": "images/manaColorless.png",
   "{W/U}": "images/manaWhiteBlue.png",
   "{W/B}": "images/manaWhiteBlack.png",
   "{U/B}": "images/manaBlueBlack.png",
@@ -24,6 +25,11 @@ const manaSymbolImages = {
   "{R/G}": "images/manaRedGreen.png",
   "{G/W}": "images/manaGreenWhite.png",
   "{G/U}": "images/manaGreenBlue.png",
+  "{W/P}": "images/manaWhitePhyrexian.png",
+  "{U/P}": "images/manaBluePhyrexian.png",
+  "{B/P}": "images/manaBlackPhyrexian.png",
+  "{R/P}": "images/manaRedPhyrexian.png",
+  "{G/P}": "images/manaGreenPhyrexian.png",
   "{X}": "images/manaX.png",
   "{0}": "images/mana0.png",
   "{1}": "images/mana1.png",
@@ -35,6 +41,8 @@ const manaSymbolImages = {
   "{7}": "images/mana7.png",
   "{8}": "images/mana8.png",
   "{9}": "images/mana9.png",
+  "{T}": "images/tap.png",
+  "A-": "images/Alchemy.png",
 };
 
 exploreSetButton.addEventListener("click", function () {
@@ -94,6 +102,201 @@ function hideElement(el) {
   el.style.display = "none";
 }
 
+function getCardColor(card) {
+  if (card.colors && card.colors.length === 0) {
+    return "";
+  }
+  if (card.colors) {
+    const manaColors = card.colors.map((color) => "{" + color + "}").join("");
+    return manaColors
+      .match(/{.*?}/g)
+      .map(
+        (symbol) =>
+          `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
+      )
+      .join(" ");
+  } else if (card.card_faces) {
+    if (card.card_faces[0].colors.length === 0) {
+      return "";
+    }
+    const manaColors = card.card_faces[0].colors
+      .map((color) => "{" + color + "}")
+      .join("");
+    return manaColors
+      .match(/{.*?}/g)
+      .map(
+        (symbol) =>
+          `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
+      )
+      .join(" ");
+  }
+  return "";
+}
+
+function getCardName(card) {
+  const regex = /A-/g;
+  const processedCardName = card.name.replace(
+    regex,
+    `<img src="${manaSymbolImages["A-"]}" alt="alchemy-sign" class="alchemy-sign">`
+  );
+  return processedCardName;
+}
+
+function getCardManaCost(card) {
+  if (card.mana_cost) {
+    const manaCostParts = card.mana_cost.split(" // ");
+    return manaCostParts
+      .map((part) => {
+        const manaSymbols = part.match(/{.*?}/g);
+        return manaSymbols
+          .map(
+            (symbol) =>
+              `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
+          )
+          .join(" ");
+      })
+      .join(" // ");
+  } else if (card.card_faces) {
+    if (card.card_faces[0].mana_cost === "") {
+      return "";
+    } else {
+      const manaCostParts = card.card_faces[0].mana_cost.split(" // ");
+      return manaCostParts
+        .map((part) => {
+          const manaSymbols = part.match(/{.*?}/g);
+          return manaSymbols
+            .map(
+              (symbol) =>
+                `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
+            )
+            .join(" ");
+        })
+        .join(" // ");
+    }
+  }
+  return "";
+}
+
+function getCardOracleText(card) {
+  const symbolRegex = /{[^}]+}/g;
+
+  if (card.oracle_text) {
+    return card.oracle_text.replace(
+      symbolRegex,
+      (match) =>
+        `<img class="mana-symbol" src="${manaSymbolImages[match]}" alt="${match}">`
+    );
+  } else if (card.card_faces) {
+    let processedOracleText1 = card.card_faces[0].oracle_text.replace(
+      symbolRegex,
+      (match) =>
+        `<img class="mana-symbol" src="${manaSymbolImages[match]}" alt="${match}">`
+    );
+    let processedOracleText2 = card.card_faces[1].oracle_text.replace(
+      symbolRegex,
+      (match) =>
+        `<img class="mana-symbol" src="${manaSymbolImages[match]}" alt="${match}">`
+    );
+    return processedOracleText1 + " // " + processedOracleText2;
+  }
+
+  return "";
+}
+
+function getCardFlavorText(card) {
+  if (card.flavor_text) {
+    return card.flavor_text;
+  } else if (
+    card.card_faces &&
+    card.card_faces[0].flavor_text &&
+    card.card_faces[1].flavor_text
+  ) {
+    return (
+      card.card_faces[0].flavor_text + " // " + card.card_faces[1].flavor_text
+    );
+  } else if (card.card_faces && card.card_faces[0].flavor_text) {
+    return card.card_faces[0].flavor_text + " // ";
+  } else if (card.card_faces && card.card_faces[1].flavor_text) {
+    return "// " + card.card_faces[1].flavor_text;
+  } else {
+    return "No flavor text";
+  }
+}
+
+function getCardPowerToughness(card) {
+  let cardPower = "";
+  let cardToughness = "";
+  if (card.power) {
+    cardPower = card.power;
+  } else if (
+    card.card_faces &&
+    card.card_faces[0].power &&
+    card.card_faces[1].power
+  ) {
+    cardPower = card.card_faces[0].power + " // " + card.card_faces[1].power;
+  } else if (card.card_faces && card.card_faces[0].power) {
+    cardPower = card.card_faces[0].power;
+  }
+  if (card.toughness) {
+    cardToughness = card.toughness;
+  } else if (
+    card.card_faces &&
+    card.card_faces[0].toughness &&
+    card.card_faces[1].toughness
+  ) {
+    cardToughness =
+      card.card_faces[0].toughness + " // " + card.card_faces[1].toughness;
+  } else if (card.card_faces && card.card_faces[0].toughness) {
+    cardToughness = card.card_faces[0].toughness;
+  }
+  return { cardPower, cardToughness };
+}
+
+function getCardImage(card) {
+  let cardImage1 = "";
+  let cardImage2 = "";
+  if (card.image_uris) {
+    cardImage1 = card.image_uris.normal;
+  } else if (card.card_faces) {
+    cardImage1 = card.card_faces[0].image_uris.normal;
+    cardImage2 = card.card_faces[1].image_uris.normal;
+  }
+  return { cardImage1, cardImage2 };
+}
+
+function cardInfo(card) {
+  const cardColor = getCardColor(card);
+  const cardName = getCardName(card);
+  const cardManaValue = card.cmc;
+  const cardManaCost = getCardManaCost(card);
+  const cardTypeLine = card.type_line;
+  const cardOracleText = getCardOracleText(card);
+  const cardFlavorText = getCardFlavorText(card);
+  const { cardPower, cardToughness } = getCardPowerToughness(card);
+  const cardRarity = card.rarity;
+  const cardArtist = card.artist;
+  const cardSetName = card.set_name;
+  const { cardImage1, cardImage2 } = getCardImage(card);
+
+  return {
+    cardId: card.id,
+    cardColor,
+    cardName,
+    cardManaValue,
+    cardManaCost,
+    cardTypeLine,
+    cardOracleText,
+    cardFlavorText,
+    cardPower,
+    cardToughness,
+    cardRarity,
+    cardArtist,
+    cardSetName,
+    cardImage1,
+    cardImage2,
+  };
+}
+
 function displayCards(cards) {
   const cardDisplayArea = document.getElementById("card-display-table");
   if (cardDisplayArea) {
@@ -101,7 +304,10 @@ function displayCards(cards) {
     cardSetTitle.innerText = "";
   }
   cardSetTitle.innerText = `${cards[0].set_name}`;
-  cards.forEach((card) => createCardElement(card, cardDisplayArea));
+  cards.forEach((card) => {
+    createCardElement(card, cardDisplayArea);
+    addCardToDeck(card);
+  });
 
   const cardNames = document.querySelectorAll(".card-name");
   cardNames.forEach(function (card) {
@@ -126,98 +332,29 @@ function displayCards(cards) {
 }
 
 function createCardElement(card, container) {
+  const cardData = cardInfo(card);
   const cardElement = document.createElement("tr");
   cardElement.classList.add("card");
 
-  let manaCost = "";
-  if (card.mana_cost) {
-    const manaCostParts = card.mana_cost.split(" // ");
-    manaCost = manaCostParts
-      .map((part) => {
-        const manaSymbols = part.match(/{.*?}/g);
-        return manaSymbols
-          .map(
-            (symbol) =>
-              `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
-          )
-          .join(" ");
-      })
-      .join(" // ");
-  } else if (card.card_faces) {
-    if (card.card_faces[0].mana_cost === "") {
-      manaCost = "";
-    } else {
-      const manaCostParts = card.card_faces[0].mana_cost.split(" // ");
-      manaCost = manaCostParts
-        .map((part) => {
-          const manaSymbols = part.match(/{.*?}/g);
-          return manaSymbols
-            .map(
-              (symbol) =>
-                `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
-            )
-            .join(" ");
-        })
-        .join(" // ");
-    }
-  }
-
-  let power = "";
-  if (card.power) {
-    power = card.power;
-  } else if (
-    card.card_faces &&
-    card.card_faces[0].power &&
-    card.card_faces[1].power
-  ) {
-    power = card.card_faces[0].power + " // " + card.card_faces[1].power;
-  } else if (card.card_faces && card.card_faces[0].power) {
-    power = card.card_faces[0].power;
-  }
-
-  let toughness = "";
-  if (card.toughness) {
-    toughness = card.toughness;
-  } else if (
-    card.card_faces &&
-    card.card_faces[0].toughness &&
-    card.card_faces[1].toughness
-  ) {
-    toughness =
-      card.card_faces[0].toughness + " // " + card.card_faces[1].toughness;
-  } else if (card.card_faces && card.card_faces[0].toughness) {
-    toughness = card.card_faces[0].toughness;
-  }
-
   cardElement.innerHTML = `
-    <td>${
-      card.colors
-        ? card.colors
-        : card.card_faces[0].colors + " // " + card.card_faces[1].colors
-    }</td>
-    <td class="name"><a class="card-name" id="${card.id}">${card.name}</a></td>
-    <td class="table-number">${card.cmc}</td>
-    <td class="mana-cost">${manaCost}</td>
-    <td>${card.type_line}</td>
-    <td>${
-      card.oracle_text
-        ? card.oracle_text
-        : card.card_faces[0].oracle_text +
-          " // " +
-          card.card_faces[1].oracle_text
-    }</td>
-    <td class="table-number">${power}</td>
-    <td class="table-number">${toughness}</td>
-    <td style="text-transform: capitalize;">${card.rarity}</td>
-    <td><button class="add-card-deck" id="add-card-${
-      card.id
-    }" onclick=addCardToDeck(${card})><b>+</b></button><button class="remove-card-deck"><b>-</b></button></td>
+    <td class="card-color">${cardData.cardColor}</td>
+    <td class="name"><a class="card-name" id="${cardData.cardId}">${cardData.cardName}</a></td>
+    <td class="table-number">${cardData.cardManaValue}</td>
+    <td class="mana-cost">${cardData.cardManaCost}</td>
+    <td>${cardData.cardTypeLine}</td>
+    <td>${cardData.cardOracleText}</td>
+    <td class="table-number">${cardData.cardPower}</td>
+    <td class="table-number">${cardData.cardToughness}</td>
+    <td style="text-transform: capitalize;">${cardData.cardRarity}</td>
+    <td><button class="add-card-deck" id="add-card-${cardData.cardId}"><b>+</b></button>
+    <button class="remove-card-deck" id="remove-card-${cardData.cardId}"><b>-</b></button>
+    </td>
   `;
   container.appendChild(cardElement);
 }
 
 function changeImg() {
-  const card1 = document.getElementById("card-image");
+  const card1 = document.getElementById("card-image1");
   const card2 = document.getElementById("card-image2");
   if (card1.style.display === "none") {
     card1.classList.toggle("rotate");
@@ -231,6 +368,7 @@ function changeImg() {
 }
 
 function displayCardInfo(card, container) {
+  const cardData = cardInfo(card);
   const cardLeftInfo = document.createElement("div");
   cardLeftInfo.classList.add("expanded-left");
   const cardRightInfo = document.createElement("div");
@@ -241,98 +379,31 @@ function displayCardInfo(card, container) {
     container.innerHTML = "";
   }
 
-  let manaCost = "";
-  if (card.mana_cost) {
-    const manaCostParts = card.mana_cost.split(" // ");
-
-    manaCost = manaCostParts
-      .map((part) => {
-        const manaSymbols = part.match(/{.*?}/g);
-        return manaSymbols
-          .map(
-            (symbol) =>
-              `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
-          )
-          .join(" ");
-      })
-      .join(" // ");
-  } else if (card.card_faces) {
-    if (card.card_faces[0].mana_cost === "") {
-      manaCost = "";
-    } else {
-      const manaCostParts = card.card_faces[0].mana_cost.split(" // ");
-      manaCost = manaCostParts
-        .map((part) => {
-          const manaSymbols = part.match(/{.*?}/g);
-          return manaSymbols
-            .map(
-              (symbol) =>
-                `<img class="mana-symbol" src="${manaSymbolImages[symbol]}" alt="${symbol}">`
-            )
-            .join(" ");
-        })
-        .join(" // ");
-    }
-  }
-
-  let power = "";
-  if (card.power) {
-    power = card.power;
-  } else if (
-    card.card_faces &&
-    card.card_faces[0].power &&
-    card.card_faces[1].power
-  ) {
-    power = card.card_faces[0].power + " // " + card.card_faces[1].power;
-  } else if (card.card_faces && card.card_faces[0].power) {
-    power = card.card_faces[0].power;
-  }
-
-  let toughness = "";
-  if (card.toughness) {
-    toughness = card.toughness;
-  } else if (
-    card.card_faces &&
-    card.card_faces[0].toughness &&
-    card.card_faces[1].toughness
-  ) {
-    toughness =
-      card.card_faces[0].toughness + " // " + card.card_faces[1].toughness;
-  } else if (card.card_faces && card.card_faces[0].toughness) {
-    toughness = card.card_faces[0].toughness;
-  }
-
-  let cardImage = "";
-  let cardImage2 = "";
   if (card.image_uris) {
-    cardImage = card.image_uris.normal;
     cardLeftInfo.innerHTML = `
     <img
-    src="${cardImage}"
+    src="${cardData.cardImage1}"
     alt="card-image"
-    id="card-image"
+    id="card-image1"
   />
-  <button class="add-card-deck" id="add-card-${card.id}"><b>Add card to deck</b></button>
+  <button class="add-card-deck" id="add-card-${cardData.cardId}"><b>Add card to deck</b></button>
   <button class="remove-card-deck"><b>Remove card from deck</b></button>
   <p><b>Quantity in deck: </b>2</p>
 `;
   } else if (card.card_faces) {
-    cardImage = card.card_faces[0].image_uris.normal;
-    cardImage2 = card.card_faces[1].image_uris.normal;
-
     cardLeftInfo.innerHTML = `
       <img
-      src="${cardImage}"
+      src="${cardData.cardImage1}"
       alt="card-image"
-      id="card-image"
+      id="card-image1"
     />
     <img
-    src="${cardImage2}"
+    src="${cardData.cardImage2}"
     alt="card-image"
     id="card-image2"
   />
     <button class="transform" onclick="changeImg()"><b>Transform card</b></button>
-    <button class="add-card-deck"><b>Add card to deck</b></button>
+    <button class="add-card-deck" id="add-card-${cardData.cardId}"><b>Add card to deck</b></button>
     <button class="remove-card-deck"><b>Remove card from deck</b></button>
     <p><b>Quantity in deck: </b>2</p>
   `;
@@ -341,55 +412,64 @@ function displayCardInfo(card, container) {
   cardRightInfo.innerHTML = `
       <div>
       <p><b>Card Name: </b></p>
-      <p class="card-info-text">${card.name}</p>
+      <p class="card-info-text">${cardData.cardName}</p>
     </div>
     <div>
       <p><b>Mana Cost: </b></p>
-      <p class="card-info-text">${manaCost}</p>
+      <p class="card-info-text">${cardData.cardManaCost}</p>
     </div>
     <div>
       <p><b>Card Type: </b></p>
-      <p class="card-info-text">${card.type_line}</p>
+      <p class="card-info-text">${cardData.cardTypeLine}</p>
     </div>
     <div>
       <p><b>Card Text: </b></p>
-      <p class="card-info-text">${
-        card.oracle_text
-          ? card.oracle_text
-          : card.card_faces[0].oracle_text +
-            " // " +
-            card.card_faces[1].oracle_text
-      }</p>
+      <p class="card-info-text">${cardData.cardOracleText}</p>
     </div>
     <div>
       <p><b>Flavor Text: </b></p>
-      <p class="card-info-text"><i>${
-        card.flavor_text ? card.flavor_text : "No flavor text"
-      }</i></p>
+      <p class="card-info-text"><i>${cardData.cardFlavorText}</i></p>
     </div>
     <div>
       <p><b>Expansion: </b></p>
-      <p class="card-info-text">${card.set_name}</p>
+      <p class="card-info-text">${cardData.cardSetName}</p>
     </div>
     <div>
       <p><b>Rarity: </b></p>
-      <p class="card-info-text" style="text-transform: capitalize;">${
-        card.rarity
-      }</p>
+      <p class="card-info-text" style="text-transform: capitalize;">${cardData.cardRarity}</p>
     </div>
     <div>
       <p><b>Artist: </b></p>
-      <p class="card-info-text">${card.artist}</p>
+      <p class="card-info-text">${cardData.cardArtist}</p>
     </div>
   `;
 
   container.appendChild(cardLeftInfo);
   container.appendChild(cardRightInfo);
   displayElement(container);
+  addCardToDeck(card);
 }
 
 function addCardToDeck(card) {
-  console.log(card);
+  const addCardButton = document.querySelector(`#add-card-${card.id}`);
+
+  addCardButton.addEventListener("click", () => {
+    const cardId = card.id;
+    const cardColor = card.colors;
+    const cardName = card.name;
+    const cardManaCost = card.mana_cost;
+    const cardType = card.type_line;
+
+    const cardIndex = deck.findIndex((cardObject) => cardObject.id === cardId);
+    if (cardIndex !== -1) {
+      deck[cardIndex].quantity++;
+    } else {
+      deck.push({ id: cardId, quantity: 1, name: cardName, color: cardColor });
+    }
+
+    alert("Card added to deck: " + card.name);
+    console.log("Card added to deck: ", card.name, deck);
+  });
 }
 
 function removeCardFromDeck() {}
