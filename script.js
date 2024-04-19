@@ -1,8 +1,10 @@
 const setSelectElement = document.getElementById("set-select");
 const exploreSetButton = document.getElementById("explore-set");
+const displayDeckButton = document.getElementById("display-deck-button");
 const tableContainer = document.getElementById("table-container");
 const cardListTable = document.getElementById("card-list-table");
 const expandedInfoCard = document.querySelector(".expanded-info-card");
+const deckDisplayArea = document.getElementById("deck-display-area");
 const cardName = document.querySelectorAll(".card-name");
 const cardSetTitle = document.getElementById("set-name");
 
@@ -30,6 +32,10 @@ const manaSymbolImages = {
   "{B/P}": "images/manaBlackPhyrexian.png",
   "{R/P}": "images/manaRedPhyrexian.png",
   "{G/P}": "images/manaGreenPhyrexian.png",
+  "{R/G/P}": "images/manaRedPhyrexianGreenPhyrexian.png",
+  "{R/W/P}": "images/manaRedPhyrexianWhitePhyrexian.png",
+  "{G/U/P}": "images/manaGreenPhyrexianBluePhyrexian.png",
+  "{G/W/P}": "images/manaGreenPhyrexianWhitePhyrexian.png",
   "{X}": "images/manaX.png",
   "{0}": "images/mana0.png",
   "{1}": "images/mana1.png",
@@ -41,6 +47,8 @@ const manaSymbolImages = {
   "{7}": "images/mana7.png",
   "{8}": "images/mana8.png",
   "{9}": "images/mana9.png",
+  "{10}": "images/mana10.png",
+  "{13}": "images/mana13.png",
   "{T}": "images/tap.png",
   "A-": "images/Alchemy.png",
 };
@@ -55,6 +63,8 @@ exploreSetButton.addEventListener("click", function () {
   const scryfallUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}`;
   fetchCards(scryfallUrl);
   hideElement(expandedInfoCard);
+  hideElement(deckDisplayArea);
+  displayElement(cardSetTitle);
 });
 
 function fetchCards(url) {
@@ -306,7 +316,6 @@ function displayCards(cards) {
   cardSetTitle.innerText = `${cards[0].set_name}`;
   cards.forEach((card) => {
     createCardElement(card, cardDisplayArea);
-    addCardToDeck(card);
   });
 
   const cardNames = document.querySelectorAll(".card-name");
@@ -346,9 +355,6 @@ function createCardElement(card, container) {
     <td class="table-number">${cardData.cardPower}</td>
     <td class="table-number">${cardData.cardToughness}</td>
     <td style="text-transform: capitalize;">${cardData.cardRarity}</td>
-    <td><button class="add-card-deck" id="add-card-${cardData.cardId}"><b>+</b></button>
-    <button class="remove-card-deck" id="remove-card-${cardData.cardId}"><b>-</b></button>
-    </td>
   `;
   container.appendChild(cardElement);
 }
@@ -388,7 +394,6 @@ function displayCardInfo(card, container) {
   />
   <button class="add-card-deck" id="add-card-${cardData.cardId}"><b>Add card to deck</b></button>
   <button class="remove-card-deck"><b>Remove card from deck</b></button>
-  <p><b>Quantity in deck: </b>2</p>
 `;
   } else if (card.card_faces) {
     cardLeftInfo.innerHTML = `
@@ -405,7 +410,6 @@ function displayCardInfo(card, container) {
     <button class="transform" onclick="changeImg()"><b>Transform card</b></button>
     <button class="add-card-deck" id="add-card-${cardData.cardId}"><b>Add card to deck</b></button>
     <button class="remove-card-deck"><b>Remove card from deck</b></button>
-    <p><b>Quantity in deck: </b>2</p>
   `;
   }
 
@@ -457,19 +461,85 @@ function addCardToDeck(card) {
     const cardId = card.id;
     const cardColor = card.colors;
     const cardName = card.name;
-    const cardManaCost = card.mana_cost;
+    const cardManaCost = card.mana_cost
+      ? card.mana_cost
+      : card.card_faces
+      ? card.card_faces[0].mana_cost
+      : "";
     const cardType = card.type_line;
 
     const cardIndex = deck.findIndex((cardObject) => cardObject.id === cardId);
     if (cardIndex !== -1) {
       deck[cardIndex].quantity++;
     } else {
-      deck.push({ id: cardId, quantity: 1, name: cardName, color: cardColor });
+      deck.push({
+        id: cardId,
+        quantity: 1,
+        name: cardName,
+        mana_cost: cardManaCost,
+        type: cardType,
+      });
     }
 
     alert("Card added to deck: " + card.name);
-    console.log("Card added to deck: ", card.name, deck);
   });
 }
 
 function removeCardFromDeck() {}
+
+function showDeck(deckData) {
+  hideElement(cardListTable);
+  hideElement(expandedInfoCard);
+  hideElement(cardSetTitle);
+  displayElement(deckDisplayArea);
+
+  if (deckDisplayArea) {
+    deckDisplayArea.innerHTML = "";
+  }
+
+  if (deckData.length === 0) {
+    deckDisplayArea.innerHTML = "<p>Your deck is currently empty!</p>";
+    return;
+  }
+
+  const deckTypesCards = deck.reduce((acc, card) => {
+    const cardType = card.type.split(" — ")[0];
+    acc[cardType] = acc[cardType] || [];
+    acc[cardType].push(card);
+    return acc;
+  }, {});
+
+  for (const type in deckTypesCards) {
+    if (
+      deckTypesCards.hasOwnProperty(type) &&
+      deckTypesCards[type].length > 0
+    ) {
+      const typeSection = document.createElement("section");
+      typeSection.classList.add("deck-type-section");
+
+      const typeTitle = document.createElement("h3");
+      typeTitle.textContent = type;
+
+      const cardList = document.createElement("ul");
+      cardList.classList.add("deck-card-list");
+
+      for (const card of deckTypesCards[type]) {
+        console.log(card);
+        const cardData = cardInfo(card);
+        const cardItem = document.createElement("li");
+        cardItem.classList.add("deck-card-container");
+
+        cardItem.innerHTML = `<p class="card-deck">${card.quantity} <a class="card-name" id="${cardData.cardId}">${cardData.cardName}</a></p><div>${cardData.cardManaCost}</div>`;
+
+        cardList.appendChild(cardItem);
+      }
+
+      typeSection.appendChild(typeTitle);
+      typeSection.appendChild(cardList);
+
+      deckDisplayArea.appendChild(typeSection);
+    }
+  }
+}
+
+displayDeckButton.addEventListener("click", () => showDeck(deck));

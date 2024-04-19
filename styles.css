@@ -96,6 +96,13 @@ tr:nth-of-type(2n) {
   max-width: 100%;
 }
 
+#show-more-btn {
+  display: none;
+  height: 30px;
+  background-color: #3454d1;
+  width: 20%;
+}
+
 .card-color {
   display: flex;
 }
@@ -206,4 +213,19 @@ tr:nth-of-type(2n) {
   font-family: "Open Sans", sans-serif;
   font-size: 0.9rem;
   text-align: justify;
+}
+
+#deck-display-area {
+  display: block;
+  margin-top: 15px;
+}
+
+.deck-card-container {
+  display: flex;
+  justify-content: space-between;
+  width: 50%;
+}
+
+.card-deck {
+  font-size: 0.9rem;
 }
