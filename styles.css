@@ -17,6 +17,7 @@ body {
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   line-height: 1.5;
+  background-color: #edf2f4;
 }
 
 #set-select {
@@ -28,9 +29,9 @@ body {
 #explore-set,
 #display-deck-button {
   padding: 5px;
-  background-color: darkslateblue;
-  box-shadow: 10px 5px 5px lightgray;
+  background-color: #457b9d;
   color: white;
+
   border-radius: 5px;
   cursor: pointer;
   border: 2px solid black;
@@ -38,12 +39,22 @@ body {
 
 #explore-set:hover,
 #display-deck-button:hover {
-  background-color: blueviolet;
+  background-color: #a8dadc;
+  color: black;
 }
 
 .wrapper {
   width: min(1200px, 100% - 3rem);
   margin: 20px auto;
+  padding: 20px;
+}
+
+header {
+  padding: 20px;
+  background-color: #1d3557;
+  color: #f1faee;
+  border-bottom: black;
+  border-style: solid;
 }
 
 #card-list-table {
@@ -73,7 +84,7 @@ caption {
 }
 
 th {
-  background: darkslateblue;
+  background: #1d3557;
   color: white;
   cursor: pointer;
   font-family: "Roboto", sans-serif;
@@ -84,6 +95,10 @@ td {
   text-align: justify;
   font-family: "Open Sans", sans-serif;
   font-size: 0.9rem;
+}
+
+tbody {
+  background-color: white;
 }
 
 tr:nth-of-type(2n) {
@@ -144,7 +159,7 @@ tr:nth-of-type(2n) {
   width: 50vw;
   display: none;
   margin: 20px;
-  gap: 50px;
+  gap: 20px;
 }
 
 .expanded-left {
@@ -207,16 +222,30 @@ tr:nth-of-type(2n) {
 .expanded-right {
   display: flex;
   flex-direction: column;
+  border: 2px solid gainsboro;
+  border-top: 3px solid black;
+  border-radius: 10px;
+  padding: 20px 20px 20px 50px;
+  background-color: white;
+  box-shadow: 10px 5px 5px lightgray;
 }
 
 .card-info-text {
   font-family: "Open Sans", sans-serif;
   font-size: 0.9rem;
   text-align: justify;
+  border-bottom: 2px solid gainsboro;
 }
 
 #deck-display-area {
-  display: block;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid gainsboro;
+  border-top: 3px solid black;
+  border-radius: 10px;
+  padding: 20px 20px 20px 50px;
+  background-color: white;
+  box-shadow: 10px 5px 5px lightgray;
   margin-top: 15px;
 }
 
@@ -224,6 +253,7 @@ tr:nth-of-type(2n) {
   display: flex;
   justify-content: space-between;
   width: 50%;
+  min-width: 300px;
 }
 
 .card-deck {

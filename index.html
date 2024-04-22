@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="wrapper">
+    <header>
       <h1>MTG DECK BUILDER</h1>
       <p>Explore Cards</p>
       <label for="set-select">Select set:</label>
@@ -29,7 +29,8 @@
       </select>
       <button id="explore-set">Explore Set</button>
       <button id="display-deck-button">Display Deck</button><br />
-
+    </header>
+    <div class="wrapper">
       <div class="table-container">
         <h2 id="set-name"></h2>
         <table id="card-list-table">
@@ -54,7 +55,7 @@
         <button id="show-more-btn">Show more</button>
       </div>
       <div class="expanded-info-card"></div>
-      <div id="deck-display-area"></div>
+      <div id="deck-display-area"><h4>Please select a set to explore!</h4></div>
     </div>
   </body>
 </html>

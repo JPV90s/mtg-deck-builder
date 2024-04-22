@@ -307,17 +307,7 @@ function cardInfo(card) {
   };
 }
 
-function displayCards(cards) {
-  const cardDisplayArea = document.getElementById("card-display-table");
-  if (cardDisplayArea) {
-    cardDisplayArea.innerHTML = "";
-    cardSetTitle.innerText = "";
-  }
-  cardSetTitle.innerText = `${cards[0].set_name}`;
-  cards.forEach((card) => {
-    createCardElement(card, cardDisplayArea);
-  });
-
+function showCardInfo() {
   const cardNames = document.querySelectorAll(".card-name");
   cardNames.forEach(function (card) {
     card.addEventListener("click", function (event) {
@@ -338,6 +328,20 @@ function displayCards(cards) {
       }
     });
   });
+}
+
+function displayCards(cards) {
+  const cardDisplayArea = document.getElementById("card-display-table");
+  if (cardDisplayArea) {
+    cardDisplayArea.innerHTML = "";
+    cardSetTitle.innerText = "";
+  }
+  cardSetTitle.innerText = `${cards[0].set_name}`;
+  cards.forEach((card) => {
+    createCardElement(card, cardDisplayArea);
+  });
+
+  showCardInfo();
 }
 
 function createCardElement(card, container) {
@@ -393,7 +397,7 @@ function displayCardInfo(card, container) {
     id="card-image1"
   />
   <button class="add-card-deck" id="add-card-${cardData.cardId}"><b>Add card to deck</b></button>
-  <button class="remove-card-deck"><b>Remove card from deck</b></button>
+  <button class="remove-card-deck" id="remove-card-${cardData.cardId}"><b>Remove card from deck</b></button>
 `;
   } else if (card.card_faces) {
     cardLeftInfo.innerHTML = `
@@ -409,7 +413,7 @@ function displayCardInfo(card, container) {
   />
     <button class="transform" onclick="changeImg()"><b>Transform card</b></button>
     <button class="add-card-deck" id="add-card-${cardData.cardId}"><b>Add card to deck</b></button>
-    <button class="remove-card-deck"><b>Remove card from deck</b></button>
+    <button class="remove-card-deck" id="remove-card-${cardData.cardId}"><b>Remove card from deck</b></button>
   `;
   }
 
@@ -444,7 +448,7 @@ function displayCardInfo(card, container) {
     </div>
     <div>
       <p><b>Artist: </b></p>
-      <p class="card-info-text">${cardData.cardArtist}</p>
+      <p class="card-info-text" style="border-bottom:none" >${cardData.cardArtist}</p>
     </div>
   `;
 
@@ -452,6 +456,7 @@ function displayCardInfo(card, container) {
   container.appendChild(cardRightInfo);
   displayElement(container);
   addCardToDeck(card);
+  removeCardFromDeck(card);
 }
 
 function addCardToDeck(card) {
@@ -485,13 +490,29 @@ function addCardToDeck(card) {
   });
 }
 
-function removeCardFromDeck() {}
+function removeCardFromDeck(card) {
+  const removeCardButton = document.querySelector(`#remove-card-${card.id}`);
+
+  removeCardButton.addEventListener("click", () => {
+    const cardIndex = deck.findIndex((cardObject) => cardObject.id === card.id);
+    if (cardIndex !== -1) {
+      deck.splice(cardIndex, 1);
+      alert("Card removed from deck");
+    } else {
+      alert("Card not in deck");
+    }
+  });
+}
 
 function showDeck(deckData) {
   hideElement(cardListTable);
   hideElement(expandedInfoCard);
   hideElement(cardSetTitle);
   displayElement(deckDisplayArea);
+
+  const deckTitle = document.createElement("h3");
+  deckTitle.innerText = "Deck";
+  deckDisplayArea.appendChild(deckTitle);
 
   if (deckDisplayArea) {
     deckDisplayArea.innerHTML = "";
@@ -538,6 +559,7 @@ function showDeck(deckData) {
       typeSection.appendChild(cardList);
 
       deckDisplayArea.appendChild(typeSection);
+      showCardInfo();
     }
   }
 }
