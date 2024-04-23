@@ -7,6 +7,7 @@ const expandedInfoCard = document.querySelector(".expanded-info-card");
 const deckDisplayArea = document.getElementById("deck-display-area");
 const cardName = document.querySelectorAll(".card-name");
 const cardSetTitle = document.getElementById("set-name");
+const showMoreBtn = document.getElementById("show-more-btn");
 
 let deck = [];
 
@@ -65,6 +66,7 @@ exploreSetButton.addEventListener("click", function () {
   hideElement(expandedInfoCard);
   hideElement(deckDisplayArea);
   displayElement(cardSetTitle);
+  displayElement(showMoreBtn);
 });
 
 function fetchCards(url) {
@@ -76,8 +78,13 @@ function fetchCards(url) {
       return response.json();
     })
     .then((data) => {
-      displayCards(data.data);
-      displayElement(cardListTable);
+      if (data.has_more) {
+        displayCards(data.data, data.next_page);
+        displayElement(cardListTable);
+      } else {
+        displayCards(data.data);
+        displayElement(cardListTable);
+      }
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -102,6 +109,8 @@ function displayElement(el) {
   if (el === cardListTable) {
     el.style.display = "table";
   } else if (el === expandedInfoCard) {
+    el.style.display = "flex";
+  } else if (el === deckDisplayArea) {
     el.style.display = "flex";
   } else {
     el.style.display = "block";
@@ -330,7 +339,7 @@ function showCardInfo() {
   });
 }
 
-function displayCards(cards) {
+function displayCards(cards, moreCards) {
   const cardDisplayArea = document.getElementById("card-display-table");
   if (cardDisplayArea) {
     cardDisplayArea.innerHTML = "";
@@ -339,6 +348,14 @@ function displayCards(cards) {
   cardSetTitle.innerText = `${cards[0].set_name}`;
   cards.forEach((card) => {
     createCardElement(card, cardDisplayArea);
+  });
+
+  showMoreBtn.addEventListener("click", () => {
+    if (cardDisplayArea) {
+      cardDisplayArea.innerHTML = "";
+      cardSetTitle.innerText = "";
+      fetchCards(moreCards);
+    }
   });
 
   showCardInfo();
@@ -384,6 +401,7 @@ function displayCardInfo(card, container) {
   const cardRightInfo = document.createElement("div");
   cardRightInfo.classList.add("expanded-right");
   hideElement(cardListTable);
+  hideElement(showMoreBtn);
 
   if (container) {
     container.innerHTML = "";
@@ -475,7 +493,18 @@ function addCardToDeck(card) {
 
     const cardIndex = deck.findIndex((cardObject) => cardObject.id === cardId);
     if (cardIndex !== -1) {
-      deck[cardIndex].quantity++;
+      if (
+        cardType.split(" — ")[0] === "Land" ||
+        cardType.split(" — ")[0] === "Basic Land"
+      ) {
+        deck[cardIndex].quantity++;
+        alert("Card added to deck: " + card.name);
+      } else if (deck[cardIndex].quantity < 4) {
+        deck[cardIndex].quantity++;
+        alert("Card added to deck: " + card.name);
+      } else if (deck[cardIndex].quantity >= 4) {
+        alert("Can only add up to four copies");
+      }
     } else {
       deck.push({
         id: cardId,
@@ -483,10 +512,10 @@ function addCardToDeck(card) {
         name: cardName,
         mana_cost: cardManaCost,
         type: cardType,
+        color: cardColor,
       });
+      alert("Card added to deck: " + card.name);
     }
-
-    alert("Card added to deck: " + card.name);
   });
 }
 
@@ -496,7 +525,7 @@ function removeCardFromDeck(card) {
   removeCardButton.addEventListener("click", () => {
     const cardIndex = deck.findIndex((cardObject) => cardObject.id === card.id);
     if (cardIndex !== -1) {
-      deck.splice(cardIndex, 1);
+      deck[cardIndex].quantity--;
       alert("Card removed from deck");
     } else {
       alert("Card not in deck");
@@ -506,21 +535,57 @@ function removeCardFromDeck(card) {
 
 function showDeck(deckData) {
   hideElement(cardListTable);
+  hideElement(showMoreBtn);
   hideElement(expandedInfoCard);
   hideElement(cardSetTitle);
   displayElement(deckDisplayArea);
 
-  const deckTitle = document.createElement("h3");
-  deckTitle.innerText = "Deck";
-  deckDisplayArea.appendChild(deckTitle);
+  console.log(deckData);
 
   if (deckDisplayArea) {
-    deckDisplayArea.innerHTML = "";
+    deckDisplayArea.innerHTML = `<div id="deck-display-left"></div>
+    <div id="deck-display-right"></div>`;
   }
 
   if (deckData.length === 0) {
-    deckDisplayArea.innerHTML = "<p>Your deck is currently empty!</p>";
+    deckDisplayArea.innerText = "Your deck is currently empty!";
     return;
+  }
+
+  const deckDisplayLeft = document.getElementById("deck-display-left");
+  const deckDisplayRight = document.getElementById("deck-display-right");
+
+  const deckTitle = document.createElement("h2");
+  deckTitle.innerText = "Deck";
+  deckDisplayLeft.appendChild(deckTitle);
+
+  const initialCardsInDeck = 0;
+  const quantityCardsInDeck = deckData.reduce(
+    (acc, curr) => acc + curr.quantity,
+    initialCardsInDeck
+  );
+
+  console.log(quantityCardsInDeck);
+
+  const cardsInDeck = document.createElement("p");
+  cardsInDeck.innerText = `Cards in deck: ${quantityCardsInDeck}`;
+  deckDisplayLeft.appendChild(cardsInDeck);
+
+  const deckTypeCounts = deck.reduce((acc, card) => {
+    const cardType = card.type.split(" — ")[0];
+    acc[cardType] = (acc[cardType] || 0) + 1;
+    return acc;
+  }, {});
+
+  const typeQuantityContainer = document.createElement("div");
+  typeQuantityContainer.classList.add("type-quantity-container");
+  deckDisplayLeft.appendChild(typeQuantityContainer);
+
+  for (const type in deckTypeCounts) {
+    const typeQuantity = document.createElement("p");
+    typeQuantity.classList.add("type-quantity");
+    typeQuantity.innerText = `${type}: ${deckTypeCounts[type]}`;
+    typeQuantityContainer.appendChild(typeQuantity);
   }
 
   const deckTypesCards = deck.reduce((acc, card) => {
@@ -539,13 +604,13 @@ function showDeck(deckData) {
       typeSection.classList.add("deck-type-section");
 
       const typeTitle = document.createElement("h3");
+      typeTitle.classList.add("deck-card-types");
       typeTitle.textContent = type;
 
       const cardList = document.createElement("ul");
       cardList.classList.add("deck-card-list");
 
       for (const card of deckTypesCards[type]) {
-        console.log(card);
         const cardData = cardInfo(card);
         const cardItem = document.createElement("li");
         cardItem.classList.add("deck-card-container");
@@ -558,7 +623,7 @@ function showDeck(deckData) {
       typeSection.appendChild(typeTitle);
       typeSection.appendChild(cardList);
 
-      deckDisplayArea.appendChild(typeSection);
+      deckDisplayRight.appendChild(typeSection);
       showCardInfo();
     }
   }

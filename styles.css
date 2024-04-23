@@ -31,10 +31,10 @@ body {
   padding: 5px;
   background-color: #457b9d;
   color: white;
-
   border-radius: 5px;
   cursor: pointer;
   border: 2px solid black;
+  box-shadow: 2px 2px 2px #edf2f4;
 }
 
 #explore-set:hover,
@@ -55,6 +55,11 @@ header {
   color: #f1faee;
   border-bottom: black;
   border-style: solid;
+  box-shadow: 0px 10px 5px lightgray;
+}
+
+#set-name {
+  text-shadow: 1px 1px lightgray;
 }
 
 #card-list-table {
@@ -113,9 +118,21 @@ tr:nth-of-type(2n) {
 
 #show-more-btn {
   display: none;
-  height: 30px;
-  background-color: #3454d1;
-  width: 20%;
+  padding: 5px;
+  background-color: #457b9d;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  border: 2px solid black;
+  box-shadow: 2px 2px 2px #1d3557;
+  align-self: end;
+  width: 70px;
+  margin-top: 5px;
+}
+
+#show-more-btn:hover {
+  background-color: #a8dadc;
+  color: black;
 }
 
 .card-color {
@@ -228,6 +245,7 @@ tr:nth-of-type(2n) {
   padding: 20px 20px 20px 50px;
   background-color: white;
   box-shadow: 10px 5px 5px lightgray;
+  min-width: 400px;
 }
 
 .card-info-text {
@@ -239,7 +257,7 @@ tr:nth-of-type(2n) {
 
 #deck-display-area {
   display: flex;
-  flex-direction: column;
+  justify-content: flex-start;
   border: 2px solid gainsboro;
   border-top: 3px solid black;
   border-radius: 10px;
@@ -247,15 +265,46 @@ tr:nth-of-type(2n) {
   background-color: white;
   box-shadow: 10px 5px 5px lightgray;
   margin-top: 15px;
+  gap: 50px;
+}
+
+#deck-display-left {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+  font-style: italic;
+}
+
+.type-quantity-container {
+  margin-top: 10px;
+}
+
+.type-quantity {
+  border-bottom: 2px solid gainsboro;
+}
+
+#deck-display-right {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
 }
 
 .deck-card-container {
   display: flex;
   justify-content: space-between;
-  width: 50%;
   min-width: 300px;
+  border-bottom: 2px solid gainsboro;
+  margin-top: 5px;
+}
+
+.deck-card-container:last-child {
+  border-bottom: none;
 }
 
 .card-deck {
   font-size: 0.9rem;
+}
+
+.deck-card-types {
+  margin-top: 5px;
 }
