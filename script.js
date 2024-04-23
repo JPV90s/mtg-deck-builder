@@ -95,6 +95,14 @@ function fetchCards(url) {
     });
 }
 
+function fetchMoreCards() {
+  const selectedSet = setSelectElement.value;
+  const nextPageUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}&page=2`;
+  fetchCards(nextPageUrl);
+}
+
+showMoreBtn.addEventListener("click", fetchMoreCards);
+
 async function fetchCardDetail(id) {
   const url = `https://api.scryfall.com/cards/${id}`;
   const response = await fetch(url);
@@ -339,26 +347,39 @@ function showCardInfo() {
   });
 }
 
-function displayCards(cards, moreCards) {
-  const cardDisplayArea = document.getElementById("card-display-table");
-  if (cardDisplayArea) {
-    cardDisplayArea.innerHTML = "";
-    cardSetTitle.innerText = "";
-  }
-  cardSetTitle.innerText = `${cards[0].set_name}`;
-  cards.forEach((card) => {
-    createCardElement(card, cardDisplayArea);
-  });
-
-  showMoreBtn.addEventListener("click", () => {
+function displayCards(initialCards, nextPageCards = null) {
+  if (nextPageCards) {
+    const cardDisplayArea = document.getElementById("card-display-table");
     if (cardDisplayArea) {
       cardDisplayArea.innerHTML = "";
       cardSetTitle.innerText = "";
-      fetchCards(moreCards);
     }
-  });
+    cardSetTitle.innerText = `${initialCards[0].set_name}`;
+    initialCards.forEach((card) => {
+      createCardElement(card, cardDisplayArea);
+    });
 
-  showCardInfo();
+    showMoreBtn.addEventListener("click", () => {
+      if (cardDisplayArea) {
+        cardDisplayArea.innerHTML = "";
+        cardSetTitle.innerText = "";
+        fetchCards(nextPageCards);
+        hideElement(showMoreBtn);
+      }
+    });
+    showCardInfo();
+  } else {
+    const cardDisplayArea = document.getElementById("card-display-table");
+    if (cardDisplayArea) {
+      cardDisplayArea.innerHTML = "";
+      cardSetTitle.innerText = "";
+    }
+    cardSetTitle.innerText = `${initialCards[0].set_name}`;
+    initialCards.forEach((card) => {
+      createCardElement(card, cardDisplayArea);
+    });
+    showCardInfo();
+  }
 }
 
 function createCardElement(card, container) {
