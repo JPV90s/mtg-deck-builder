@@ -13,6 +13,9 @@
 }
 
 body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
   font-size: 1.125rem;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -47,13 +50,14 @@ body {
   width: min(1200px, 100% - 3rem);
   margin: 20px auto;
   padding: 20px;
+  flex: 1 0 auto;
 }
 
 header {
   padding: 20px;
   background-color: #1d3557;
   color: #f1faee;
-  border-bottom: black;
+  border-bottom: 3px solid black;
   border-style: solid;
   box-shadow: 0px 10px 5px lightgray;
 }
@@ -133,6 +137,10 @@ tr:nth-of-type(2n) {
 #show-more-btn:hover {
   background-color: #a8dadc;
   color: black;
+}
+
+thead {
+  position: sticky;
 }
 
 .card-color {
@@ -307,4 +315,20 @@ tr:nth-of-type(2n) {
 
 .deck-card-types {
   margin-top: 5px;
+}
+
+footer {
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px;
+  background-color: #1d3557;
+  color: #f1faee;
+  font-size: 18px;
+  box-shadow: 0px -5px 5px lightgray;
+  border-top: 3px solid black;
 }

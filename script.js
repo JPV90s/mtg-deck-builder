@@ -78,13 +78,8 @@ function fetchCards(url) {
       return response.json();
     })
     .then((data) => {
-      if (data.has_more) {
-        displayCards(data.data, data.next_page);
-        displayElement(cardListTable);
-      } else {
-        displayCards(data.data);
-        displayElement(cardListTable);
-      }
+      displayCards(data.data);
+      displayElement(cardListTable);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
@@ -98,6 +93,7 @@ function fetchCards(url) {
 function fetchMoreCards() {
   const selectedSet = setSelectElement.value;
   const nextPageUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}&page=2`;
+  window.scrollTo({ top: 0, behavior: "smooth" });
   fetchCards(nextPageUrl);
 }
 
@@ -347,39 +343,18 @@ function showCardInfo() {
   });
 }
 
-function displayCards(initialCards, nextPageCards = null) {
-  if (nextPageCards) {
-    const cardDisplayArea = document.getElementById("card-display-table");
-    if (cardDisplayArea) {
-      cardDisplayArea.innerHTML = "";
-      cardSetTitle.innerText = "";
-    }
-    cardSetTitle.innerText = `${initialCards[0].set_name}`;
-    initialCards.forEach((card) => {
-      createCardElement(card, cardDisplayArea);
-    });
-
-    showMoreBtn.addEventListener("click", () => {
-      if (cardDisplayArea) {
-        cardDisplayArea.innerHTML = "";
-        cardSetTitle.innerText = "";
-        fetchCards(nextPageCards);
-        hideElement(showMoreBtn);
-      }
-    });
-    showCardInfo();
-  } else {
-    const cardDisplayArea = document.getElementById("card-display-table");
-    if (cardDisplayArea) {
-      cardDisplayArea.innerHTML = "";
-      cardSetTitle.innerText = "";
-    }
-    cardSetTitle.innerText = `${initialCards[0].set_name}`;
-    initialCards.forEach((card) => {
-      createCardElement(card, cardDisplayArea);
-    });
-    showCardInfo();
+function displayCards(initialCards) {
+  const cardDisplayArea = document.getElementById("card-display-table");
+  if (cardDisplayArea) {
+    cardDisplayArea.innerHTML = "";
+    cardSetTitle.innerText = "";
   }
+  cardSetTitle.innerText = `${initialCards[0].set_name}`;
+  initialCards.forEach((card) => {
+    createCardElement(card, cardDisplayArea);
+  });
+
+  showCardInfo();
 }
 
 function createCardElement(card, container) {
