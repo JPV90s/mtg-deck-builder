@@ -1,13 +1,17 @@
 const setSelectElement = document.getElementById("set-select");
-const exploreSetButton = document.getElementById("explore-set");
-const displayDeckButton = document.getElementById("display-deck-button");
+const exploreSetBtn = document.getElementById("explore-set");
+const displayDeckBtn = document.getElementById("display-deck-btn");
+const filterTableBtn = document.getElementById("filter-btn");
+const cancelFilterBtn = document.getElementById("cancel-btn");
+const filterTableDialog = document.getElementById("filter");
 const tableContainer = document.getElementById("table-container");
 const cardListTable = document.getElementById("card-list-table");
 const expandedInfoCard = document.querySelector(".expanded-info-card");
 const deckDisplayArea = document.getElementById("deck-display-area");
 const cardName = document.querySelectorAll(".card-name");
 const cardSetTitle = document.getElementById("set-name");
-const showMoreBtn = document.getElementById("show-more-btn");
+const nextBtn = document.getElementById("next-btn");
+const prevBtn = document.getElementById("prev-btn");
 
 let deck = [];
 
@@ -54,7 +58,7 @@ const manaSymbolImages = {
   "A-": "images/Alchemy.png",
 };
 
-exploreSetButton.addEventListener("click", function () {
+exploreSetBtn.addEventListener("click", function () {
   const selectedSet = setSelectElement.value;
 
   if (selectedSet === "") {
@@ -65,9 +69,13 @@ exploreSetButton.addEventListener("click", function () {
   fetchCards(scryfallUrl);
   hideElement(expandedInfoCard);
   hideElement(deckDisplayArea);
+  hideElement(prevBtn);
   displayElement(cardSetTitle);
-  displayElement(showMoreBtn);
+  displayElement(nextBtn);
 });
+
+filterTableBtn.addEventListener("click", () => filterTableDialog.showModal());
+cancelFilterBtn.addEventListener("click", () => filterTableDialog.close());
 
 function fetchCards(url) {
   fetch(url)
@@ -95,9 +103,28 @@ function fetchMoreCards() {
   const nextPageUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}&page=2`;
   window.scrollTo({ top: 0, behavior: "smooth" });
   fetchCards(nextPageUrl);
+  hideElement(nextBtn);
+  displayElement(prevBtn);
 }
 
-showMoreBtn.addEventListener("click", fetchMoreCards);
+nextBtn.addEventListener("click", fetchMoreCards);
+
+prevBtn.addEventListener("click", function () {
+  const selectedSet = setSelectElement.value;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+
+  if (selectedSet === "") {
+    alert("Please select a set to explore!");
+    return;
+  }
+  const scryfallUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}`;
+  fetchCards(scryfallUrl);
+  hideElement(expandedInfoCard);
+  hideElement(deckDisplayArea);
+  hideElement(prevBtn);
+  displayElement(cardSetTitle);
+  displayElement(nextBtn);
+});
 
 async function fetchCardDetail(id) {
   const url = `https://api.scryfall.com/cards/${id}`;
@@ -397,7 +424,9 @@ function displayCardInfo(card, container) {
   const cardRightInfo = document.createElement("div");
   cardRightInfo.classList.add("expanded-right");
   hideElement(cardListTable);
-  hideElement(showMoreBtn);
+  hideElement(nextBtn);
+  hideElement(prevBtn);
+  hideElement(deckDisplayArea);
 
   if (container) {
     container.innerHTML = "";
@@ -521,8 +550,13 @@ function removeCardFromDeck(card) {
   removeCardButton.addEventListener("click", () => {
     const cardIndex = deck.findIndex((cardObject) => cardObject.id === card.id);
     if (cardIndex !== -1) {
-      deck[cardIndex].quantity--;
-      alert("Card removed from deck");
+      if (deck[cardIndex].quantity === 1) {
+        deck.splice(cardIndex, 1);
+        alert("Card removed from deck");
+      } else {
+        deck[cardIndex].quantity--;
+        alert("Card removed from deck");
+      }
     } else {
       alert("Card not in deck");
     }
@@ -531,7 +565,8 @@ function removeCardFromDeck(card) {
 
 function showDeck(deckData) {
   hideElement(cardListTable);
-  hideElement(showMoreBtn);
+  hideElement(nextBtn);
+  hideElement(prevBtn);
   hideElement(expandedInfoCard);
   hideElement(cardSetTitle);
   displayElement(deckDisplayArea);
@@ -625,4 +660,4 @@ function showDeck(deckData) {
   }
 }
 
-displayDeckButton.addEventListener("click", () => showDeck(deck));
+displayDeckBtn.addEventListener("click", () => showDeck(deck));

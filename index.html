@@ -11,26 +11,119 @@
     <header>
       <h1>MTG DECK BUILDER</h1>
       <p>Explore Cards</p>
-      <label for="set-select">Select set:</label>
-      <select name="sets" id="set-select">
-        <option value="">--Please choose an option--</option>
-        <option value="mkm">Murders at Karlov Manor</option>
-        <option value="lci">The Lost Caverns of Ixalan</option>
-        <option value="woe">Wilds of Eldraine</option>
-        <option value="mat">March of the Machine: The Aftermath</option>
-        <option value="mom">March of the Machine</option>
-        <option value="one">Phyrexia: All Will Be One</option>
-        <option value="bro">The Brothers' War</option>
-        <option value="dmu">Dominaria United</option>
-        <option value="snc">Streets of New Capenna</option>
-        <option value="neo">Kamigawa: Neon Dynasty</option>
-        <option value="vow">Innistrad: Crimson Vow</option>
-        <option value="mid">Innistrad: Midnight Hunt</option>
-      </select>
-      <button id="explore-set">Explore Set</button>
-      <button id="display-deck-button">Display Deck</button><br />
+      <div class="header-wrapper">
+        <label for="set-select">Select set:</label>
+        <select name="sets" id="set-select">
+          <option value="">--Please choose an option--</option>
+          <option value="mkm">Murders at Karlov Manor</option>
+          <option value="lci">The Lost Caverns of Ixalan</option>
+          <option value="woe">Wilds of Eldraine</option>
+          <option value="mat">March of the Machine: The Aftermath</option>
+          <option value="mom">March of the Machine</option>
+          <option value="one">Phyrexia: All Will Be One</option>
+          <option value="bro">The Brothers' War</option>
+          <option value="dmu">Dominaria United</option>
+          <option value="snc">Streets of New Capenna</option>
+          <option value="neo">Kamigawa: Neon Dynasty</option>
+          <option value="vow">Innistrad: Crimson Vow</option>
+          <option value="mid">Innistrad: Midnight Hunt</option>
+        </select>
+        <div class="header-btns">
+          <button id="explore-set">Explore Set</button>
+          <button id="display-deck-btn">Display Deck</button>
+          <button id="filter-btn">Filter Set</button>
+        </div>
+      </div>
     </header>
     <div class="wrapper">
+      <dialog id="filter">
+        <div id="filter-wrapper">
+          <h3>Filter Set</h3>
+          <p>Search by Name:</p>
+          <input
+            type="text"
+            id="nameFilter"
+            placeholder="Filter by name"
+          /><button>Search by name</button>
+          <form method="dialog">
+            <fieldset>
+              <legend>Color</legend>
+              <input type="checkbox" id="white" name="white" value="W" />
+              <label for="white"
+                ><img src="images\manaWhite.png" alt="" class="mana-symbol"
+              /></label>
+              <input type="checkbox" id="blue" name="blue" value="U" />
+              <label for="blue"
+                ><img src="images\manaBlue.png" alt="" class="mana-symbol"
+              /></label>
+              <input type="checkbox" id="black" name="black" value="B" />
+              <label for="black"
+                ><img src="images\manaBlack.png" alt="" class="mana-symbol"
+              /></label>
+              <input type="checkbox" id="red" name="red" value="R" />
+              <label for="red"
+                ><img src="images\manaRed.png" alt="" class="mana-symbol"
+              /></label>
+              <input type="checkbox" id="green" name="green" value="G" />
+              <label for="green"
+                ><img src="images\manaGreen.png" alt="" class="mana-symbol"
+              /></label>
+              <input
+                type="checkbox"
+                id="colorless"
+                name="colorless"
+                value="Boat"
+              />
+              <label for="colorless"></label><br />
+            </fieldset>
+            <fieldset>
+              <legend>Mana Value</legend>
+              <input type="number" />
+            </fieldset>
+            <fieldset>
+              <label for="card-type-select">Card Type:</label>
+              <select name="card-types" id="card-type-select">
+                <option value="">--Any type--</option>
+                <option value="sorceries">Sorceries</option>
+                <option value="instants">Instants</option>
+                <option value="lands">Lands</option>
+                <option value="creatures">Creatures</option>
+                <option value="artifacts">Artifacts</option>
+                <option value="enchantments">Enchantments</option>
+                <option value="planeswalkers">Planeswalkers</option>
+              </select>
+            </fieldset>
+            <fieldset>
+              <legend>Power</legend>
+              <input type="number" />
+            </fieldset>
+            <fieldset>
+              <legend>Toughness</legend>
+              <input type="number" />
+            </fieldset>
+            <fieldset>
+              <legend>Rarity</legend>
+              <input type="checkbox" id="mythic" name="mythic" value="mythic" />
+              <label for="mythic">Mythic</label>
+              <input type="checkbox" id="rare" name="rare" value="rare" />
+              <label for="rare">Rare</label>
+              <input
+                type="checkbox"
+                id="uncommon"
+                name="uncommon"
+                value="uncommon"
+              />
+              <label for="uncommon">Uncommon</label>
+              <input type="checkbox" id="common" name="common" value="common" />
+              <label for="common">Common</label>
+            </fieldset>
+            <div id="filter-btns">
+              <input type="button" value="Cancel" id="cancel-btn" />
+              <input type="submit" value="Filter" id="filter-form-btn" />
+            </div>
+          </form>
+        </div>
+      </dialog>
       <div class="table-container">
         <h2 id="set-name"></h2>
         <table id="card-list-table">
@@ -52,7 +145,8 @@
           </thead>
           <tbody id="card-display-table"></tbody>
         </table>
-        <button id="show-more-btn">Next</button>
+        <button class="table-btn" id="prev-btn">Prev</button>
+        <button class="table-btn" id="next-btn">Next</button>
       </div>
       <div class="expanded-info-card"></div>
       <div id="deck-display-area">
