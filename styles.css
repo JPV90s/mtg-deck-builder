@@ -22,9 +22,18 @@ body {
   background-color: #edf2f4;
 }
 
-#set-select {
+header {
+  padding: 20px;
+  background-color: #1d3557;
+  color: #f1faee;
+  border-bottom: 3px solid black;
+  border-style: solid;
+  box-shadow: 0px 10px 5px lightgray;
+}
+
+select {
   padding: 5px;
-  border: 2px solid black;
+  border: 2px solid gray;
   border-radius: 5px;
 }
 
@@ -66,7 +75,6 @@ body {
 
 #filter-wrapper {
   position: fixed;
-  width: 500px;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -87,7 +95,36 @@ body {
 form {
   display: flex;
   flex-direction: column;
+  font-size: 0.9rem;
   gap: 10px;
+}
+
+.form-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid gainsboro;
+  padding: 5px;
+}
+
+input[type="text"] {
+  padding: 5px;
+  border: 2px solid gray;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+input[type="checkbox"] {
+  border: 2px solid black;
+  height: 25px;
+  width: 25px;
+}
+
+input[type="number"] {
+  border: 2px solid gray;
+  height: 40px;
+  width: 70px;
 }
 
 .wrapper {
@@ -97,13 +134,28 @@ form {
   flex: 1 0 auto;
 }
 
-header {
-  padding: 20px;
-  background-color: #1d3557;
-  color: #f1faee;
-  border-bottom: 3px solid black;
-  border-style: solid;
-  box-shadow: 0px 10px 5px lightgray;
+#colors,
+#rarity {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#loader-image {
+  display: none;
+  width: 50px;
+  height: 50px;
+  margin: 10px auto;
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 #set-name {

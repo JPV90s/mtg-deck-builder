@@ -4,6 +4,7 @@ const displayDeckBtn = document.getElementById("display-deck-btn");
 const filterTableBtn = document.getElementById("filter-btn");
 const cancelFilterBtn = document.getElementById("cancel-btn");
 const filterTableDialog = document.getElementById("filter");
+const loaderImage = document.getElementById("loader-image");
 const tableContainer = document.getElementById("table-container");
 const cardListTable = document.getElementById("card-list-table");
 const expandedInfoCard = document.querySelector(".expanded-info-card");
@@ -70,14 +71,16 @@ exploreSetBtn.addEventListener("click", function () {
   hideElement(expandedInfoCard);
   hideElement(deckDisplayArea);
   hideElement(prevBtn);
-  displayElement(cardSetTitle);
-  displayElement(nextBtn);
 });
 
 filterTableBtn.addEventListener("click", () => filterTableDialog.showModal());
 cancelFilterBtn.addEventListener("click", () => filterTableDialog.close());
 
 function fetchCards(url) {
+  hideElement(cardListTable);
+  hideElement(nextBtn);
+  hideElement(cardSetTitle);
+  displayElement(loaderImage);
   fetch(url)
     .then((response) => {
       if (!response.ok) {
@@ -88,9 +91,13 @@ function fetchCards(url) {
     .then((data) => {
       displayCards(data.data);
       displayElement(cardListTable);
+      hideElement(loaderImage);
+      displayElement(cardSetTitle);
+      displayElement(nextBtn);
     })
     .catch((error) => {
       console.error("Error fetching data:", error);
+      document.getElementById("loader-image").style.display = "none";
       alert("Error fetching cards. Please try again later.");
     })
     .finally(() => {
@@ -661,3 +668,35 @@ function showDeck(deckData) {
 }
 
 displayDeckBtn.addEventListener("click", () => showDeck(deck));
+
+document
+  .getElementById("filterForm")
+  .addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    const selectedColors = Array.from(
+      document.querySelectorAll('#colors input[type="checkbox"]:checked'),
+      (input) => input.value
+    );
+
+    const manaValue = document.getElementById("mana-value-number").value;
+
+    const cardType = document.getElementById("card-type-select").value;
+
+    const powerValue = document.getElementById("power-value-number").value;
+    const toughnessValue = document.getElementById(
+      "toughness-value-number"
+    ).value;
+
+    const selectedRarities = Array.from(
+      document.querySelectorAll('#rarity input[type="checkbox"]:checked'),
+      (input) => input.value
+    );
+
+    console.log("Selected Colors:", selectedColors);
+    console.log("Mana Value:", manaValue);
+    console.log("Card Type:", cardType);
+    console.log("Power Value:", powerValue);
+    console.log("Toughness Value:", toughnessValue);
+    console.log("Selected Rarities:", selectedRarities);
+  });
