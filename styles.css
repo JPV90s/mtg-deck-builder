@@ -29,6 +29,23 @@ header {
   border-bottom: 3px solid black;
   border-style: solid;
   box-shadow: 0px 10px 5px lightgray;
+  min-width: 100vw;
+}
+
+.set-images {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.set-image {
+  height: 4vh;
+  cursor: pointer;
+}
+
+.set-image:hover {
+  height: 5vh;
 }
 
 select {
@@ -50,7 +67,6 @@ select {
   cursor: pointer;
   border: 2px solid black;
   box-shadow: 2px 2px 2px #edf2f4;
-  min-width: 90px;
 }
 
 #explore-set:hover,
@@ -64,8 +80,9 @@ select {
 
 .header-wrapper {
   display: flex;
+  justify-content: space-around;
   align-items: center;
-  gap: 5px;
+  gap: 10px;
 }
 
 .header-btns {
@@ -83,20 +100,14 @@ select {
   border-radius: 10px;
   padding: 20px 20px 20px 50px;
   background-color: whitesmoke;
-  min-width: 400px;
+  min-width: 600px;
 }
 
-#filter-btns {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-form {
+#filterForm {
   display: flex;
   flex-direction: column;
   font-size: 0.9rem;
-  gap: 10px;
+  gap: 15px;
 }
 
 .form-wrapper {
@@ -117,14 +128,20 @@ input[type="text"] {
 
 input[type="checkbox"] {
   border: 2px solid black;
-  height: 25px;
-  width: 25px;
+  height: 20px;
+  width: 20px;
 }
 
 input[type="number"] {
   border: 2px solid gray;
-  height: 40px;
+  height: 30px;
   width: 70px;
+}
+
+#filter-btns {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 .wrapper {
@@ -423,4 +440,8 @@ footer {
   font-size: 18px;
   box-shadow: 0px -5px 5px lightgray;
   border-top: 3px solid black;
+}
+
+#github-icon {
+  height: 18px;
 }

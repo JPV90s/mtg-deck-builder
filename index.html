@@ -9,54 +9,136 @@
   </head>
   <body>
     <header>
-      <h1>MTG DECK BUILDER</h1>
-      <p>Explore Cards</p>
       <div class="header-wrapper">
-        <label for="set-select">Select set:</label>
-        <select name="sets" id="set-select">
-          <option value="">--Please choose an option--</option>
-          <option value="mkm">Murders at Karlov Manor</option>
-          <option value="lci">The Lost Caverns of Ixalan</option>
-          <option value="woe">Wilds of Eldraine</option>
-          <option value="mat">March of the Machine: The Aftermath</option>
-          <option value="mom">March of the Machine</option>
-          <option value="one">Phyrexia: All Will Be One</option>
-          <option value="bro">The Brothers' War</option>
-          <option value="dmu">Dominaria United</option>
-          <option value="snc">Streets of New Capenna</option>
-          <option value="neo">Kamigawa: Neon Dynasty</option>
-          <option value="vow">Innistrad: Crimson Vow</option>
-          <option value="mid">Innistrad: Midnight Hunt</option>
-        </select>
+        <h1>MTG DECK BUILDER</h1>
+        <div class="set-images">
+          <p>Select set:</p>
+          <img
+            src="images\sets\mkm.svg"
+            alt="Murders at Karlov Manor"
+            title="Murders at Karlov Manor"
+            class="set-image"
+            data-set-id="mkm"
+          />
+
+          <img
+            src="images\sets\lci.svg"
+            alt="The Lost Caverns of Ixalan"
+            title="The Lost Caverns of Ixalan"
+            class="set-image"
+            data-set-id="lci"
+          />
+          <img
+            src="images\sets\woe.svg"
+            alt="Wilds of Eldraine"
+            title="Wilds of Eldraine"
+            class="set-image"
+            data-set-id="woe"
+          />
+          <img
+            src="images\sets\mat.svg"
+            alt="March of the Machine: The Aftermath"
+            title="March of the Machine: The Aftermath"
+            class="set-image"
+            data-set-id="mat"
+          />
+
+          <img
+            src="images\sets\mom.svg"
+            alt="March of the Machine"
+            title="March of the Machine"
+            class="set-image"
+            data-set-id="mom"
+          />
+
+          <img
+            src="images\sets\one.svg"
+            alt="Phyrexia: All Will be One"
+            title="Phyrexia: All Will be One"
+            class="set-image"
+            data-set-id="one"
+          />
+
+          <img
+            src="images\sets\bro.svg"
+            alt="The Brothers War"
+            title="The Brothers War"
+            class="set-image"
+            data-set-id="bro"
+          />
+
+          <img
+            src="images\sets\dmu.svg"
+            alt="Dominaria United"
+            title="Dominaria United"
+            class="set-image"
+            data-set-id="dmu"
+          />
+
+          <img
+            src="images\sets\snc.svg"
+            alt="Streets of New Capenna"
+            title="Streets of New Capenna"
+            class="set-image"
+            data-set-id="snc"
+          />
+
+          <img
+            src="images\sets\neo.svg"
+            alt="Kamigawa: Neon Dynasty"
+            title="Kamigawa: Neon Dynasty"
+            class="set-image"
+            data-set-id="neo"
+          />
+
+          <img
+            src="images\sets\vow.svg"
+            alt="Innistrad: Crimson Vow"
+            title="Innistrad: Crimson Vow"
+            class="set-image"
+            data-set-id="vow"
+          />
+
+          <img
+            src="images\sets\mid.svg"
+            alt="Innistrad: Midnight Hunt"
+            title="Innistrad: Midnight Hunt"
+            class="set-image"
+            data-set-id="mid"
+          />
+        </div>
         <div class="header-btns">
-          <button id="explore-set">Explore Set</button>
           <button id="display-deck-btn">Display Deck</button>
           <button id="filter-btn">Advanced Search</button>
         </div>
       </div>
     </header>
     <div class="wrapper">
-      <dialog id="filter" method="dialog">
+      <dialog id="filter">
         <div id="filter-wrapper">
           <h3>Advanced Search:</h3>
-          <form id="filterForm">
+          <form id="filterForm" method="dialog">
             <fieldset>
-              <label for="set-select">Select set:</label>
-              <select name="sets" id="set-select" required>
-                <option value="">--Please choose an option--</option>
-                <option value="mkm">Murders at Karlov Manor</option>
-                <option value="lci">The Lost Caverns of Ixalan</option>
-                <option value="woe">Wilds of Eldraine</option>
-                <option value="mat">March of the Machine: The Aftermath</option>
-                <option value="mom">March of the Machine</option>
-                <option value="one">Phyrexia: All Will Be One</option>
-                <option value="bro">The Brothers' War</option>
-                <option value="dmu">Dominaria United</option>
-                <option value="snc">Streets of New Capenna</option>
-                <option value="neo">Kamigawa: Neon Dynasty</option>
-                <option value="vow">Innistrad: Crimson Vow</option>
-                <option value="mid">Innistrad: Midnight Hunt</option>
-              </select>
+              <div class="form-wrapper">
+                <label for="set-select">Select set:</label>
+                <select name="sets" id="set-select" required>
+                  <option value="">--Please choose an option--</option>
+                  <option value="mkm">Murders at Karlov Manor</option>
+                  <option value="lci">The Lost Caverns of Ixalan</option>
+                  <option value="woe">Wilds of Eldraine</option>
+                  <option value="mat">
+                    March of the Machine: The Aftermath
+                  </option>
+                  <option value="mom">March of the Machine</option>
+                  <option value="one">Phyrexia: All Will Be One</option>
+                  <option value="bro">The Brothers' War</option>
+                  <option value="dmu">Dominaria United</option>
+                  <option value="snc">Streets of New Capenna</option>
+                  <option value="neo">Kamigawa: Neon Dynasty</option>
+                  <option value="vow">Innistrad: Crimson Vow</option>
+                  <option value="mid">Innistrad: Midnight Hunt</option>
+                </select>
+              </div>
             </fieldset>
             <fieldset>
               <div class="form-wrapper">
@@ -65,7 +147,7 @@
                   <input type="checkbox" id="white" name="white" value="W" />
                   <label for="white"
                     ><img
-                      src="images\manaWhite.png"
+                      src="images\manaColors\manaWhite.png"
                       alt=""
                       class="mana-symbol"
                     />White</label
@@ -73,7 +155,7 @@
                   <input type="checkbox" id="blue" name="blue" value="U" />
                   <label for="blue"
                     ><img
-                      src="images\manaBlue.png"
+                      src="images\manaColors\manaBlue.png"
                       alt=""
                       class="mana-symbol"
                     />Blue</label
@@ -81,7 +163,7 @@
                   <input type="checkbox" id="black" name="black" value="B" />
                   <label for="black"
                     ><img
-                      src="images\manaBlack.png"
+                      src="images\manaColors\manaBlack.png"
                       alt=""
                       class="mana-symbol"
                     />Black</label
@@ -89,7 +171,7 @@
                   <input type="checkbox" id="red" name="red" value="R" />
                   <label for="red"
                     ><img
-                      src="images\manaRed.png"
+                      src="images\manaColors\manaRed.png"
                       alt=""
                       class="mana-symbol"
                     />Red</label
@@ -97,7 +179,7 @@
                   <input type="checkbox" id="green" name="green" value="G" />
                   <label for="green"
                     ><img
-                      src="images\manaGreen.png"
+                      src="images\manaColors\manaGreen.png"
                       alt=""
                       class="mana-symbol"
                     />Green</label
@@ -108,7 +190,7 @@
             <fieldset>
               <div class="form-wrapper">
                 <legend>Mana Value</legend>
-                <input type="number" id="mana-value-number" />
+                <input type="number" id="mana-value-number" min="0" />
               </div>
             </fieldset>
             <fieldset>
@@ -129,13 +211,13 @@
             <fieldset>
               <div class="form-wrapper">
                 <legend>Power</legend>
-                <input type="number" id="power-value-number" />
+                <input type="number" id="power-value-number" min="0" />
               </div>
             </fieldset>
             <fieldset>
               <div class="form-wrapper">
                 <legend>Toughness</legend>
-                <input type="number" id="toughness-value-number" />
+                <input type="number" id="toughness-value-number" min="0" />
               </div>
             </fieldset>
             <fieldset>
@@ -176,7 +258,7 @@
         </div>
       </dialog>
       <div class="table-container">
-        <img src="images\loading.svg" alt="loading" id="loader-image" />
+        <img src="images\others\loading.svg" alt="loading" id="loader-image" />
         <h2 id="set-name"></h2>
         <table id="card-list-table">
           <caption>
@@ -208,8 +290,16 @@
       </div>
     </div>
     <footer>
-      <p>Copyright © 2024 JPV90s</p>
-      <a href="https://github.com/JPV90s" target="_blank"> </a>
+      <p>
+        Copyright © 2024
+        <a href="https://github.com/JPV90s" target="_blank"
+          ><img
+            src="images\others\github.svg"
+            alt="github icon"
+            id="github-icon"
+          /> </a
+        >JPV90s
+      </p>
     </footer>
   </body>
 </html>

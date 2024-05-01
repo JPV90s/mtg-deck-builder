@@ -17,121 +17,105 @@ const prevBtn = document.getElementById("prev-btn");
 let deck = [];
 
 const manaSymbolImages = {
-  "{W}": "images/manaWhite.png",
-  "{U}": "images/manaBlue.png",
-  "{B}": "images/manaBlack.png",
-  "{R}": "images/manaRed.png",
-  "{G}": "images/manaGreen.png",
-  "{C}": "images/manaColorless.png",
-  "{W/U}": "images/manaWhiteBlue.png",
-  "{W/B}": "images/manaWhiteBlack.png",
-  "{U/B}": "images/manaBlueBlack.png",
-  "{U/R}": "images/manaBlueRed.png",
-  "{B/R}": "images/manaBlackRed.png",
-  "{B/G}": "images/manaBlackGreen.png",
-  "{R/W}": "images/manaRedWhite.png",
-  "{R/G}": "images/manaRedGreen.png",
-  "{G/W}": "images/manaGreenWhite.png",
-  "{G/U}": "images/manaGreenBlue.png",
-  "{W/P}": "images/manaWhitePhyrexian.png",
-  "{U/P}": "images/manaBluePhyrexian.png",
-  "{B/P}": "images/manaBlackPhyrexian.png",
-  "{R/P}": "images/manaRedPhyrexian.png",
-  "{G/P}": "images/manaGreenPhyrexian.png",
-  "{R/G/P}": "images/manaRedPhyrexianGreenPhyrexian.png",
-  "{R/W/P}": "images/manaRedPhyrexianWhitePhyrexian.png",
-  "{G/U/P}": "images/manaGreenPhyrexianBluePhyrexian.png",
-  "{G/W/P}": "images/manaGreenPhyrexianWhitePhyrexian.png",
-  "{X}": "images/manaX.png",
-  "{0}": "images/mana0.png",
-  "{1}": "images/mana1.png",
-  "{2}": "images/mana2.png",
-  "{3}": "images/mana3.png",
-  "{4}": "images/mana4.png",
-  "{5}": "images/mana5.png",
-  "{6}": "images/mana6.png",
-  "{7}": "images/mana7.png",
-  "{8}": "images/mana8.png",
-  "{9}": "images/mana9.png",
-  "{10}": "images/mana10.png",
-  "{13}": "images/mana13.png",
-  "{T}": "images/tap.png",
-  "A-": "images/Alchemy.png",
+  "{W}": "images/manaColors/manaWhite.png",
+  "{U}": "images/manaColors/manaBlue.png",
+  "{B}": "images/manaColors/manaBlack.png",
+  "{R}": "images/manaColors/manaRed.png",
+  "{G}": "images/manaColors/manaGreen.png",
+  "{C}": "images/manaColors/manaColorless.png",
+  "{W/U}": "images/manaColors/manaWhiteBlue.png",
+  "{W/B}": "images/manaColors/manaWhiteBlack.png",
+  "{U/B}": "images/manaColors/manaBlueBlack.png",
+  "{U/R}": "images/manaColors/manaBlueRed.png",
+  "{B/R}": "images/manaColors/manaBlackRed.png",
+  "{B/G}": "images/manaColors/manaBlackGreen.png",
+  "{R/W}": "images/manaColors/manaRedWhite.png",
+  "{R/G}": "images/manaColors/manaRedGreen.png",
+  "{G/W}": "images/manaColors/manaGreenWhite.png",
+  "{G/U}": "images/manaColors/manaGreenBlue.png",
+  "{W/P}": "images/manaColors/manaWhitePhyrexian.png",
+  "{U/P}": "images/manaColors/manaBluePhyrexian.png",
+  "{B/P}": "images/manaColors/manaBlackPhyrexian.png",
+  "{R/P}": "images/manaColors/manaRedPhyrexian.png",
+  "{G/P}": "images/manaColors/manaGreenPhyrexian.png",
+  "{R/G/P}": "images/manaColors/manaRedPhyrexianGreenPhyrexian.png",
+  "{R/W/P}": "images/manaColors/manaRedPhyrexianWhitePhyrexian.png",
+  "{G/U/P}": "images/manaColors/manaGreenPhyrexianBluePhyrexian.png",
+  "{G/W/P}": "images/manaColors/manaGreenPhyrexianWhitePhyrexian.png",
+  "{X}": "images/manaNumbers/manaX.png",
+  "{0}": "images/manaNumbers/mana0.png",
+  "{1}": "images/manaNumbers/mana1.png",
+  "{2}": "images/manaNumbers/mana2.png",
+  "{3}": "images/manaNumbers/mana3.png",
+  "{4}": "images/manaNumbers/mana4.png",
+  "{5}": "images/manaNumbers/mana5.png",
+  "{6}": "images/manaNumbers/mana6.png",
+  "{7}": "images/manaNumbers/mana7.png",
+  "{8}": "images/manaNumbers/mana8.png",
+  "{9}": "images/manaNumbers/mana9.png",
+  "{10}": "images/manaNumbers/mana10.png",
+  "{13}": "images/manaNumbers/mana13.png",
+  "{T}": "images/others/tap.png",
+  "A-": "images/others/Alchemy.png",
 };
 
-exploreSetBtn.addEventListener("click", function () {
-  const selectedSet = setSelectElement.value;
+const setImages = document.querySelectorAll(".set-image");
 
-  if (selectedSet === "") {
-    alert("Please select a set to explore!");
-    return;
-  }
-  const scryfallUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}`;
-  fetchCards(scryfallUrl);
-  hideElement(expandedInfoCard);
-  hideElement(deckDisplayArea);
-  hideElement(prevBtn);
+setImages.forEach((image) => {
+  image.addEventListener("click", function (event) {
+    const clickedSetId = event.target.dataset.setId;
+    const scryfallUrl = `https://api.scryfall.com/cards/search?q=set:${clickedSetId}`;
+
+    displayElement(loaderImage);
+    hideElement(deckDisplayArea);
+    hideElement(cardListTable);
+    hideElement(cardSetTitle);
+    hideElement(expandedInfoCard);
+
+    fetchCards(scryfallUrl)
+      .then((page1Data) => {
+        if (page1Data.has_more) {
+          const nextPageUrl = `https://api.scryfall.com/cards/search?q=set:${clickedSetId}&page=2`;
+          return fetchCards(nextPageUrl).then((page2Data) => {
+            return page1Data.data.concat(page2Data.data);
+          });
+        } else {
+          return page1Data.data;
+        }
+      })
+      .then((allCards) => {
+        const allCardsFromSet = allCards;
+        console.log(allCardsFromSet);
+        displayCards(allCardsFromSet);
+        displayElement(cardListTable);
+        hideElement(loaderImage);
+        displayElement(cardSetTitle);
+        displayElement(nextBtn);
+      })
+      .catch((error) => {
+        console.error("Error in fetching cards:", error);
+      });
+  });
 });
 
 filterTableBtn.addEventListener("click", () => filterTableDialog.showModal());
 cancelFilterBtn.addEventListener("click", () => filterTableDialog.close());
 
 function fetchCards(url) {
-  hideElement(cardListTable);
-  hideElement(nextBtn);
-  hideElement(cardSetTitle);
-  displayElement(loaderImage);
-  fetch(url)
+  return fetch(url)
     .then((response) => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       return response.json();
     })
-    .then((data) => {
-      displayCards(data.data);
-      displayElement(cardListTable);
-      hideElement(loaderImage);
-      displayElement(cardSetTitle);
-      displayElement(nextBtn);
-    })
     .catch((error) => {
       console.error("Error fetching data:", error);
       document.getElementById("loader-image").style.display = "none";
       alert("Error fetching cards. Please try again later.");
-    })
-    .finally(() => {
-      setTimeout(() => {}, 100);
+      return Promise.reject(error);
     });
 }
-
-function fetchMoreCards() {
-  const selectedSet = setSelectElement.value;
-  const nextPageUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}&page=2`;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-  fetchCards(nextPageUrl);
-  hideElement(nextBtn);
-  displayElement(prevBtn);
-}
-
-nextBtn.addEventListener("click", fetchMoreCards);
-
-prevBtn.addEventListener("click", function () {
-  const selectedSet = setSelectElement.value;
-  window.scrollTo({ top: 0, behavior: "smooth" });
-
-  if (selectedSet === "") {
-    alert("Please select a set to explore!");
-    return;
-  }
-  const scryfallUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}`;
-  fetchCards(scryfallUrl);
-  hideElement(expandedInfoCard);
-  hideElement(deckDisplayArea);
-  hideElement(prevBtn);
-  displayElement(cardSetTitle);
-  displayElement(nextBtn);
-});
 
 async function fetchCardDetail(id) {
   const url = `https://api.scryfall.com/cards/${id}`;
@@ -377,14 +361,14 @@ function showCardInfo() {
   });
 }
 
-function displayCards(initialCards) {
+function displayCards(cardsFromSet) {
   const cardDisplayArea = document.getElementById("card-display-table");
   if (cardDisplayArea) {
     cardDisplayArea.innerHTML = "";
     cardSetTitle.innerText = "";
   }
-  cardSetTitle.innerText = `${initialCards[0].set_name}`;
-  initialCards.forEach((card) => {
+  cardSetTitle.innerText = `${cardsFromSet[0].set_name}`;
+  cardsFromSet.forEach((card) => {
     createCardElement(card, cardDisplayArea);
   });
 
@@ -603,8 +587,6 @@ function showDeck(deckData) {
     initialCardsInDeck
   );
 
-  console.log(quantityCardsInDeck);
-
   const cardsInDeck = document.createElement("p");
   cardsInDeck.innerText = `Cards in deck: ${quantityCardsInDeck}`;
   deckDisplayLeft.appendChild(cardsInDeck);
@@ -674,10 +656,26 @@ document
   .addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const selectedColors = Array.from(
-      document.querySelectorAll('#colors input[type="checkbox"]:checked'),
-      (input) => input.value
+    const selectedSet = setSelectElement.value;
+    const scryfallUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}`;
+
+    let selectedColors = [];
+
+    const checkboxColor = document.querySelectorAll(
+      '#colors input[type="checkbox"]'
     );
+
+    let anySelectedColor = false;
+    for (const checkbox of checkboxColor) {
+      if (checkbox.checked) {
+        anySelectedColor = true;
+        selectedColors.push(checkbox.value);
+      }
+    }
+
+    if (!anySelectedColor) {
+      selectedColors = ["W", "U", "B", "R", "G"];
+    }
 
     const manaValue = document.getElementById("mana-value-number").value;
 
@@ -688,15 +686,102 @@ document
       "toughness-value-number"
     ).value;
 
-    const selectedRarities = Array.from(
-      document.querySelectorAll('#rarity input[type="checkbox"]:checked'),
-      (input) => input.value
+    let selectedRarities = [];
+
+    const checkboxRarity = document.querySelectorAll(
+      '#rarity input[type="checkbox"]'
     );
 
-    console.log("Selected Colors:", selectedColors);
-    console.log("Mana Value:", manaValue);
-    console.log("Card Type:", cardType);
-    console.log("Power Value:", powerValue);
-    console.log("Toughness Value:", toughnessValue);
-    console.log("Selected Rarities:", selectedRarities);
+    let anySelectedRarities = false;
+    for (const checkbox of checkboxRarity) {
+      if (checkbox.checked) {
+        anySelectedRarities = true;
+        selectedRarities.push(checkbox.value);
+      }
+    }
+
+    if (!anySelectedRarities) {
+      selectedRarities = ["mythic", "rare", "uncommon", "common"];
+    }
+
+    const dialog = document.getElementById("filter");
+    dialog.close();
+
+    const filterForm = document.getElementById("filterForm");
+    filterForm.reset();
+
+    fetchCards(scryfallUrl)
+      .then((page1Data) => {
+        if (page1Data.has_more) {
+          const nextPageUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}&page=2`;
+          return fetchCards(nextPageUrl).then((page2Data) => {
+            return page1Data.data.concat(page2Data.data);
+          });
+        } else {
+          return page1Data.data;
+        }
+      })
+      .then((allCards) => {
+        const allCardsFromSet = allCards;
+        const filteredCards = filterCards(
+          allCardsFromSet,
+          selectedColors,
+          manaValue,
+          cardType,
+          powerValue,
+          toughnessValue,
+          selectedRarities
+        );
+        displayCards(filteredCards);
+        displayElement(cardListTable);
+        hideElement(loaderImage);
+        displayElement(cardSetTitle);
+        displayElement(nextBtn);
+        hideElement(deckDisplayArea);
+      })
+      .catch((error) => {
+        console.error("Error in fetching cards:", error);
+      });
   });
+
+function filterCards(
+  cards,
+  selectedColors,
+  manaValue,
+  cardType,
+  powerValue,
+  toughnessValue,
+  selectedRarities
+) {
+  const filteredCards = cards.filter((card) => {
+    const colorMatches = selectedColors.some((color) =>
+      card.colors.includes(color)
+    );
+
+    const manaValueMatches =
+      !manaValue || parseInt(card.cmc) === parseInt(manaValue);
+
+    const typeMatches = !cardType || cardType === card.type_line;
+
+    const powerMatches =
+      !powerValue || parseInt(card.power) === parseInt(powerValue);
+
+    const toughnessMatches =
+      !toughnessValue || parseInt(card.toughness) === parseInt(toughnessValue);
+
+    const rarityMatches = selectedRarities.some(
+      (rarity) => card.rarity === rarity
+    );
+
+    return (
+      colorMatches &&
+      manaValueMatches &&
+      typeMatches &&
+      powerMatches &&
+      toughnessMatches &&
+      rarityMatches
+    );
+  });
+
+  return filteredCards;
+}
