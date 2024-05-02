@@ -85,7 +85,6 @@ setImages.forEach((image) => {
       })
       .then((allCards) => {
         const allCardsFromSet = allCards;
-        console.log(allCardsFromSet);
         displayCards(allCardsFromSet);
         displayElement(cardListTable);
         hideElement(loaderImage);
@@ -674,7 +673,7 @@ document
     }
 
     if (!anySelectedColor) {
-      selectedColors = ["W", "U", "B", "R", "G"];
+      selectedColors = ["W", "U", "B", "R", "G", ""];
     }
 
     const manaValue = document.getElementById("mana-value-number").value;
@@ -754,8 +753,10 @@ function filterCards(
   selectedRarities
 ) {
   const filteredCards = cards.filter((card) => {
-    const colorMatches = selectedColors.some((color) =>
-      card.colors.includes(color)
+    const colorMatches = selectedColors.some(
+      (color) =>
+        card.colors.includes(color) ||
+        (color === "" && card.colors.length === 0)
     );
 
     const manaValueMatches =
@@ -784,4 +785,38 @@ function filterCards(
   });
 
   return filteredCards;
+}
+
+let headers = Array.from(document.querySelectorAll("th"));
+let sortAscending = Array(headers.length).fill(true);
+
+headers.forEach((header, index) => {
+  header.addEventListener("click", () => {
+    sortTable(index, sortAscending[index]);
+    sortAscending[index] = !sortAscending[index];
+  });
+});
+
+function sortTable(columnIndex, ascending) {
+  let table = document.getElementById("card-list-table");
+  let rows = Array.from(table.rows).slice(1);
+
+  rows.sort((rowA, rowB) => {
+    let a = rowA.cells[columnIndex].innerText;
+    let b = rowB.cells[columnIndex].innerText;
+
+    if (!isNaN(a) && !isNaN(b)) {
+      return ascending ? a - b : b - a;
+    }
+
+    return ascending ? a.localeCompare(b) : b.localeCompare(a);
+  });
+
+  while (table.rows.length > 1) {
+    table.deleteRow(1);
+  }
+
+  rows.forEach((row) => {
+    table.appendChild(row);
+  });
 }
