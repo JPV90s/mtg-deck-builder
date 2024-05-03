@@ -598,6 +598,25 @@ function showDeck(deckData) {
     quantityCardsDeckDisplay.style.color = "green";
   }
 
+  const colors = new Set();
+  deck.forEach((card) => {
+    card.color.forEach((color) => colors.add(color));
+  });
+  let deckColors = Array.from(colors);
+  deckColors = deckColors.map((color) => {
+    const symbol = `{${color}}`;
+    const imgElement = document.createElement("img");
+    imgElement.className = "mana-symbol";
+    imgElement.src = manaSymbolImages[symbol];
+    imgElement.alt = symbol;
+    return imgElement;
+  });
+
+  const colorsInDeck = document.createElement("p");
+  colorsInDeck.innerText = "Deck colors: ";
+  deckColors.forEach((colorElement) => colorsInDeck.appendChild(colorElement));
+  deckDisplayLeft.appendChild(colorsInDeck);
+
   const deckTypeCounts = deck.reduce((acc, card) => {
     const cardType = card.type.split(" — ")[0];
     acc[cardType] = (acc[cardType] || 0) + card.quantity;
