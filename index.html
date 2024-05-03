@@ -118,9 +118,10 @@
         <div id="filter-wrapper">
           <h3>Advanced Search:</h3>
           <form id="filterForm" method="dialog">
+            <h4>Required:</h4>
             <fieldset>
               <div class="form-wrapper">
-                <label for="set-select">Select set:</label>
+                <label for="set-select">Select set</label>
                 <select name="sets" id="set-select" required>
                   <option value="">--Please choose an option--</option>
                   <option value="mkm">Murders at Karlov Manor</option>
@@ -140,6 +141,7 @@
                 </select>
               </div>
             </fieldset>
+            <h4>Optional:</h4>
             <fieldset>
               <div class="form-wrapper">
                 <legend>Color</legend>
@@ -202,12 +204,6 @@
             </fieldset>
             <fieldset>
               <div class="form-wrapper">
-                <legend>Mana Value</legend>
-                <input type="number" id="mana-value-number" min="0" />
-              </div>
-            </fieldset>
-            <fieldset>
-              <div class="form-wrapper">
                 <label for="card-type-select">Card Type</label>
                 <select name="card-types" id="card-type-select">
                   <option value="">--Any type--</option>
@@ -221,18 +217,26 @@
                 </select>
               </div>
             </fieldset>
-            <fieldset>
-              <div class="form-wrapper">
-                <legend>Power</legend>
-                <input type="number" id="power-value-number" min="0" />
-              </div>
-            </fieldset>
-            <fieldset>
-              <div class="form-wrapper">
-                <legend>Toughness</legend>
-                <input type="number" id="toughness-value-number" min="0" />
-              </div>
-            </fieldset>
+            <div class="form-wrapper">
+              <fieldset>
+                <div class="form-wrapper">
+                  <legend>Power</legend>
+                  <input type="number" id="power-value-number" min="0" />
+                </div>
+              </fieldset>
+              <fieldset>
+                <div class="form-wrapper">
+                  <legend>Toughness</legend>
+                  <input type="number" id="toughness-value-number" min="0" />
+                </div>
+              </fieldset>
+              <fieldset>
+                <div class="form-wrapper">
+                  <legend>Mana Value</legend>
+                  <input type="number" id="mana-value-number" min="0" />
+                </div>
+              </fieldset>
+            </div>
             <fieldset>
               <div class="form-wrapper">
                 <legend>Rarity</legend>
@@ -297,7 +301,55 @@
       </div>
       <div class="expanded-info-card"></div>
       <div id="deck-display-area">
-        <h4>Please select a set to explore!</h4>
+        <div id="welcome">
+          <h3>Welcome!</h3>
+          <p>
+            Here are the key Standard deck building rules in Magic the
+            Gathering:
+          </p>
+          <h4>Deck Size:</h4>
+          <ul>
+            <li>
+              Your main deck must contain a minimum of 60 cards. It's generally
+              recommended to have exactly 60 cards for optimal performance.
+            </li>
+            <li>
+              You can have an optional sideboard of up to 15 cards. These cards
+              are not used during the game itself but can be swapped in and out
+              of your main deck between matches in a best-of-three format.
+            </li>
+          </ul>
+          <h4>Card Limits:</h4>
+          <ul>
+            <li>
+              You cannot have more than 4 copies of any card with the same name
+              in your entire 75-card deck (main deck + sideboard), except for
+              basic lands.
+            </li>
+            <li>
+              Basic lands (Plains, Island, Swamp, Mountain, Forest) are the only
+              cards you can have more than 4 copies of.
+            </li>
+          </ul>
+          <h4>Standard Legal Sets:</h4>
+          <ul>
+            <li>
+              Standard is a rotating format, meaning only cards from the most
+              recent sets are legal for play.
+            </li>
+            <li>
+              Four times a year, with the release of the fall set, the four
+              oldest Standard sets rotate out.
+            </li>
+            <li>
+              You can find the currently legal sets on the official Wizards of
+              the Coast website:
+              <a href="https://magic.wizards.com/en/formats/standard"
+                >https://magic.wizards.com/en/formats/standard</a
+              >
+            </li>
+          </ul>
+        </div>
         <div id="deck-display-left"></div>
         <div id="deck-display-right"></div>
       </div>

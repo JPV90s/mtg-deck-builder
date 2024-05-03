@@ -129,9 +129,7 @@ async function fetchCardDetail(id) {
 function displayElement(el) {
   if (el === cardListTable) {
     el.style.display = "table";
-  } else if (el === expandedInfoCard) {
-    el.style.display = "flex";
-  } else if (el === deckDisplayArea) {
+  } else if (el === expandedInfoCard || el === deckDisplayArea) {
     el.style.display = "flex";
   } else {
     el.style.display = "block";
@@ -587,12 +585,22 @@ function showDeck(deckData) {
   );
 
   const cardsInDeck = document.createElement("p");
-  cardsInDeck.innerText = `Cards in deck: ${quantityCardsInDeck}`;
+  cardsInDeck.innerHTML = `Cards in deck: <span id="quantity-cards-deck">${quantityCardsInDeck}</span>`;
   deckDisplayLeft.appendChild(cardsInDeck);
+
+  const quantityCardsDeckDisplay = document.getElementById(
+    "quantity-cards-deck"
+  );
+
+  if (quantityCardsInDeck < 60) {
+    quantityCardsDeckDisplay.style.color = "red";
+  } else {
+    quantityCardsDeckDisplay.style.color = "green";
+  }
 
   const deckTypeCounts = deck.reduce((acc, card) => {
     const cardType = card.type.split(" — ")[0];
-    acc[cardType] = (acc[cardType] || 0) + 1;
+    acc[cardType] = (acc[cardType] || 0) + card.quantity;
     return acc;
   }, {});
 

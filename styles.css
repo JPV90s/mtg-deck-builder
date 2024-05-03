@@ -52,6 +52,7 @@ select {
   padding: 5px;
   border: 2px solid gray;
   border-radius: 5px;
+  width: 50%;
 }
 
 #explore-set,
@@ -106,15 +107,14 @@ select {
 #filterForm {
   display: flex;
   flex-direction: column;
+  gap: 5px;
   font-size: 0.9rem;
-  gap: 15px;
 }
 
 .form-wrapper {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid gainsboro;
   padding: 5px;
 }
 
@@ -145,7 +145,7 @@ input[type="number"] {
 }
 
 .wrapper {
-  width: min(1200px, 100% - 3rem);
+  width: min(1300px, 100% - 3rem);
   margin: 20px auto;
   padding: 20px;
   flex: 1 0 auto;
@@ -156,6 +156,7 @@ input[type="number"] {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 5px;
 }
 
 #loader-image {
@@ -212,10 +213,15 @@ caption {
 }
 
 th {
-  background: #1d3557;
+  background-color: #1d3557;
   color: white;
   cursor: pointer;
   font-family: "Roboto", sans-serif;
+}
+
+th:hover {
+  background-color: #457b9d;
+  border-radius: 10px;
 }
 
 td {
@@ -372,6 +378,11 @@ tr:nth-of-type(2n) {
   border-bottom: 2px solid gainsboro;
 }
 
+#welcome {
+  text-align: justify;
+  font-size: 0.99rem;
+}
+
 #deck-display-area {
   display: flex;
   justify-content: flex-start;
@@ -389,15 +400,25 @@ tr:nth-of-type(2n) {
   display: flex;
   flex-direction: column;
   width: 20%;
+  border-right: 2px solid gainsboro;
+  border-radius: 10px;
 }
 
 .type-quantity-container {
   margin-top: 10px;
+  padding-right: 10px;
 }
 
 .type-quantity {
+  display: flex;
+  justify-content: flex-end;
+  font-style: italic;
   border-bottom: 2px solid gainsboro;
   color: #1d3557;
+}
+
+.type-quantity:last-child {
+  border: none;
 }
 
 #deck-display-right {
