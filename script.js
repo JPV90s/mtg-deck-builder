@@ -1,3 +1,6 @@
+const title = document.getElementById("title");
+const welcomeMsg = document.getElementById("welcome");
+const setImages = document.querySelectorAll(".set-image");
 const setSelectElement = document.getElementById("set-select");
 const exploreSetBtn = document.getElementById("explore-set");
 const displayDeckBtn = document.getElementById("display-deck-btn");
@@ -11,8 +14,6 @@ const expandedInfoCard = document.querySelector(".expanded-info-card");
 const deckDisplayArea = document.getElementById("deck-display-area");
 const cardName = document.querySelectorAll(".card-name");
 const cardSetTitle = document.getElementById("set-name");
-const nextBtn = document.getElementById("next-btn");
-const prevBtn = document.getElementById("prev-btn");
 
 let deck = [];
 
@@ -59,7 +60,13 @@ const manaSymbolImages = {
   "A-": "images/others/Alchemy.png",
 };
 
-const setImages = document.querySelectorAll(".set-image");
+title.addEventListener("click", () => {
+  hideElement(deckDisplayArea);
+  hideElement(cardListTable);
+  hideElement(cardSetTitle);
+  hideElement(expandedInfoCard);
+  displayElement(welcomeMsg);
+});
 
 setImages.forEach((image) => {
   image.addEventListener("click", function (event) {
@@ -71,6 +78,7 @@ setImages.forEach((image) => {
     hideElement(cardListTable);
     hideElement(cardSetTitle);
     hideElement(expandedInfoCard);
+    hideElement(welcomeMsg);
 
     fetchCards(scryfallUrl)
       .then((page1Data) => {
@@ -89,7 +97,6 @@ setImages.forEach((image) => {
         displayElement(cardListTable);
         hideElement(loaderImage);
         displayElement(cardSetTitle);
-        displayElement(nextBtn);
       })
       .catch((error) => {
         console.error("Error in fetching cards:", error);
@@ -97,7 +104,13 @@ setImages.forEach((image) => {
   });
 });
 
-filterTableBtn.addEventListener("click", () => filterTableDialog.showModal());
+filterTableBtn.addEventListener("click", () => {
+  filterTableDialog.showModal();
+  hideElement(deckDisplayArea);
+  hideElement(expandedInfoCard);
+  hideElement(cardSetTitle);
+  hideElement(welcomeMsg);
+});
 cancelFilterBtn.addEventListener("click", () => filterTableDialog.close());
 
 function fetchCards(url) {
@@ -378,15 +391,15 @@ function createCardElement(card, container) {
   cardElement.classList.add("card");
 
   cardElement.innerHTML = `
-    <td class="card-color">${cardData.cardColor}</td>
-    <td class="name"><a class="card-name" id="${cardData.cardId}">${cardData.cardName}</a></td>
-    <td class="table-number">${cardData.cardManaValue}</td>
-    <td class="mana-cost">${cardData.cardManaCost}</td>
-    <td>${cardData.cardTypeLine}</td>
-    <td>${cardData.cardOracleText}</td>
-    <td class="table-number">${cardData.cardPower}</td>
-    <td class="table-number">${cardData.cardToughness}</td>
-    <td style="text-transform: capitalize;">${cardData.cardRarity}</td>
+    <td class="card-color" data-cell="Color">${cardData.cardColor}</td>
+    <td class="name" data-cell="Name"><a class="card-name" id="${cardData.cardId}">${cardData.cardName}</a></td>
+    <td class="table-number" data-cell="Mana Value">${cardData.cardManaValue}</td>
+    <td class="mana-cost" data-cell="Mana Cost">${cardData.cardManaCost}</td>
+    <td data-cell="Type">${cardData.cardTypeLine}</td>
+    <td data-cell="Oracle">${cardData.cardOracleText}</td>
+    <td class="table-number" data-cell="Power">${cardData.cardPower}</td>
+    <td class="table-number" data-cell="Toughness">${cardData.cardToughness}</td>
+    <td style="text-transform: capitalize;" data-cell="Rarity">${cardData.cardRarity}</td>
   `;
   container.appendChild(cardElement);
 }
@@ -412,8 +425,6 @@ function displayCardInfo(card, container) {
   const cardRightInfo = document.createElement("div");
   cardRightInfo.classList.add("expanded-right");
   hideElement(cardListTable);
-  hideElement(nextBtn);
-  hideElement(prevBtn);
   hideElement(deckDisplayArea);
 
   if (container) {
@@ -495,7 +506,11 @@ function addCardToDeck(card) {
 
   addCardButton.addEventListener("click", () => {
     const cardId = card.id;
-    const cardColor = card.colors;
+    const cardColor = card.colors
+      ? card.colors
+      : card.card_faces
+      ? card.card_faces[0].colors
+      : "";
     const cardName = card.name;
     const cardManaCost = card.mana_cost
       ? card.mana_cost
@@ -553,10 +568,9 @@ function removeCardFromDeck(card) {
 
 function showDeck(deckData) {
   hideElement(cardListTable);
-  hideElement(nextBtn);
-  hideElement(prevBtn);
   hideElement(expandedInfoCard);
   hideElement(cardSetTitle);
+  hideElement(welcomeMsg);
   displayElement(deckDisplayArea);
 
   console.log(deckData);
@@ -661,7 +675,7 @@ function showDeck(deckData) {
         const cardItem = document.createElement("li");
         cardItem.classList.add("deck-card-container");
 
-        cardItem.innerHTML = `<p class="card-deck">${card.quantity} <a class="card-name" id="${cardData.cardId}">${cardData.cardName}</a></p><div>${cardData.cardManaCost}</div>`;
+        cardItem.innerHTML = `<p class="card-deck">${card.quantity} <a class="card-name" id="${cardData.cardId}">${cardData.cardName}</a></p><div class="mana-cost">${cardData.cardManaCost}</div>`;
 
         cardList.appendChild(cardItem);
       }
@@ -681,6 +695,7 @@ document
   .getElementById("filterForm")
   .addEventListener("submit", function (event) {
     event.preventDefault();
+    displayElement(loaderImage);
 
     const selectedSet = setSelectElement.value;
     const scryfallUrl = `https://api.scryfall.com/cards/search?q=set:${selectedSet}`;
@@ -733,9 +748,6 @@ document
     const dialog = document.getElementById("filter");
     dialog.close();
 
-    const filterForm = document.getElementById("filterForm");
-    filterForm.reset();
-
     fetchCards(scryfallUrl)
       .then((page1Data) => {
         if (page1Data.has_more) {
@@ -758,12 +770,16 @@ document
           toughnessValue,
           selectedRarities
         );
-        displayCards(filteredCards);
-        displayElement(cardListTable);
-        hideElement(loaderImage);
-        displayElement(cardSetTitle);
-        displayElement(nextBtn);
-        hideElement(deckDisplayArea);
+        if (filteredCards.length > 0) {
+          displayCards(filteredCards);
+          displayElement(cardListTable);
+          hideElement(loaderImage);
+          displayElement(cardSetTitle);
+          hideElement(deckDisplayArea);
+        } else {
+          alert("No cards found");
+          hideElement(loaderImage);
+        }
       })
       .catch((error) => {
         console.error("Error in fetching cards:", error);
@@ -780,16 +796,25 @@ function filterCards(
   selectedRarities
 ) {
   const filteredCards = cards.filter((card) => {
-    const colorMatches = selectedColors.some(
-      (color) =>
-        card.colors.includes(color) ||
-        (color === "" && card.colors.length === 0)
-    );
+    const colorMatches = selectedColors.some((color) => {
+      if (card.colors) {
+        return (
+          card.colors.includes(color) ||
+          (color === "" && card.colors.length === 0)
+        );
+      } else {
+        return (
+          card.card_faces[0].colors.includes(color) ||
+          (color === "" && card.card_faces[0].colors.length === 0)
+        );
+      }
+    });
 
     const manaValueMatches =
       !manaValue || parseInt(card.cmc) === parseInt(manaValue);
 
-    const typeMatches = !cardType || cardType === card.type_line;
+    const cardTypeRegex = new RegExp(cardType, "i");
+    const typeMatches = !cardType || card.type_line.match(cardTypeRegex);
 
     const powerMatches =
       !powerValue || parseInt(card.power) === parseInt(powerValue);
@@ -825,15 +850,17 @@ headers.forEach((header, index) => {
 });
 
 function sortTable(columnIndex, ascending) {
-  let table = document.getElementById("card-list-table");
-  let rows = Array.from(table.rows).slice(1);
+  let table = "";
+  let rows = [];
+  table = document.getElementById("card-list-table");
+  rows = Array.from(table.rows).slice(1);
 
   rows.sort((rowA, rowB) => {
     let a = rowA.cells[columnIndex].innerText;
     let b = rowB.cells[columnIndex].innerText;
 
     if (!isNaN(a) && !isNaN(b)) {
-      return ascending ? a - b : b - a;
+      return ascending ? Number(a) - Number(b) : Number(b) - Number(a);
     }
 
     return ascending ? a.localeCompare(b) : b.localeCompare(a);

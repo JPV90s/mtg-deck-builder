@@ -10,9 +10,9 @@
   <body>
     <header>
       <div class="header-wrapper">
-        <h1>MTG DECK BUILDER</h1>
+        <h1 id="title">MTG DECK BUILDER</h1>
+        <p>Select set:</p>
         <div class="set-images">
-          <p>Select set:</p>
           <img
             src="images\sets\mkm.svg"
             alt="Murders at Karlov Manor"
@@ -143,62 +143,74 @@
             </fieldset>
             <h4>Optional:</h4>
             <fieldset>
-              <div class="form-wrapper">
+              <div class="form-wrapper colors-wrapper">
                 <legend>Color</legend>
                 <div id="colors">
-                  <input type="checkbox" id="white" name="white" value="W" />
-                  <label for="white"
-                    ><img
-                      src="images\manaColors\manaWhite.png"
-                      alt=""
-                      class="mana-symbol"
-                    />White</label
-                  >
-                  <input type="checkbox" id="blue" name="blue" value="U" />
-                  <label for="blue"
-                    ><img
-                      src="images\manaColors\manaBlue.png"
-                      alt=""
-                      class="mana-symbol"
-                    />Blue</label
-                  >
-                  <input type="checkbox" id="black" name="black" value="B" />
-                  <label for="black"
-                    ><img
-                      src="images\manaColors\manaBlack.png"
-                      alt=""
-                      class="mana-symbol"
-                    />Black</label
-                  >
-                  <input type="checkbox" id="red" name="red" value="R" />
-                  <label for="red"
-                    ><img
-                      src="images\manaColors\manaRed.png"
-                      alt=""
-                      class="mana-symbol"
-                    />Red</label
-                  >
-                  <input type="checkbox" id="green" name="green" value="G" />
-                  <label for="green"
-                    ><img
-                      src="images\manaColors\manaGreen.png"
-                      alt=""
-                      class="mana-symbol"
-                    />Green</label
-                  >
-                  <input
-                    type="checkbox"
-                    id="colorless"
-                    name="colorless"
-                    value=""
-                  />
-                  <label for="colorless"
-                    ><img
-                      src="images\manaColors\manaColorless.png"
-                      alt=""
-                      class="mana-symbol"
-                    />Colorless</label
-                  >
+                  <div>
+                    <input type="checkbox" id="white" name="white" value="W" />
+                    <label for="white"
+                      ><img
+                        src="images\manaColors\manaWhite.png"
+                        alt=""
+                        class="mana-symbol"
+                      />White</label
+                    >
+                  </div>
+                  <div>
+                    <input type="checkbox" id="blue" name="blue" value="U" />
+                    <label for="blue"
+                      ><img
+                        src="images\manaColors\manaBlue.png"
+                        alt=""
+                        class="mana-symbol"
+                      />Blue</label
+                    >
+                  </div>
+                  <div>
+                    <input type="checkbox" id="black" name="black" value="B" />
+                    <label for="black"
+                      ><img
+                        src="images\manaColors\manaBlack.png"
+                        alt=""
+                        class="mana-symbol"
+                      />Black</label
+                    >
+                  </div>
+                  <div>
+                    <input type="checkbox" id="red" name="red" value="R" />
+                    <label for="red"
+                      ><img
+                        src="images\manaColors\manaRed.png"
+                        alt=""
+                        class="mana-symbol"
+                      />Red</label
+                    >
+                  </div>
+                  <div>
+                    <input type="checkbox" id="green" name="green" value="G" />
+                    <label for="green"
+                      ><img
+                        src="images\manaColors\manaGreen.png"
+                        alt=""
+                        class="mana-symbol"
+                      />Green</label
+                    >
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="colorless"
+                      name="colorless"
+                      value=""
+                    />
+                    <label for="colorless"
+                      ><img
+                        src="images\manaColors\manaColorless.png"
+                        alt=""
+                        class="mana-symbol"
+                      />Colorless</label
+                    >
+                  </div>
                 </div>
               </div>
             </fieldset>
@@ -217,53 +229,61 @@
                 </select>
               </div>
             </fieldset>
-            <div class="form-wrapper">
+            <div class="form-wrapper power-toughness-value-wrapper">
               <fieldset>
-                <div class="form-wrapper">
+                <div class="power-toughness-value">
                   <legend>Power</legend>
                   <input type="number" id="power-value-number" min="0" />
                 </div>
               </fieldset>
               <fieldset>
-                <div class="form-wrapper">
+                <div class="power-toughness-value">
                   <legend>Toughness</legend>
                   <input type="number" id="toughness-value-number" min="0" />
                 </div>
               </fieldset>
               <fieldset>
-                <div class="form-wrapper">
+                <div class="power-toughness-value">
                   <legend>Mana Value</legend>
                   <input type="number" id="mana-value-number" min="0" />
                 </div>
               </fieldset>
             </div>
             <fieldset>
-              <div class="form-wrapper">
+              <div class="form-wrapper rarity-wrapper">
                 <legend>Rarity</legend>
                 <div id="rarity">
-                  <input
-                    type="checkbox"
-                    id="mythic"
-                    name="mythic"
-                    value="mythic"
-                  />
-                  <label for="mythic">Mythic</label>
-                  <input type="checkbox" id="rare" name="rare" value="rare" />
-                  <label for="rare">Rare</label>
-                  <input
-                    type="checkbox"
-                    id="uncommon"
-                    name="uncommon"
-                    value="uncommon"
-                  />
-                  <label for="uncommon">Uncommon</label>
-                  <input
-                    type="checkbox"
-                    id="common"
-                    name="common"
-                    value="common"
-                  />
-                  <label for="common">Common</label>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="mythic"
+                      name="mythic"
+                      value="mythic"
+                    />
+                    <label for="mythic">Mythic</label>
+                  </div>
+                  <div>
+                    <input type="checkbox" id="rare" name="rare" value="rare" />
+                    <label for="rare">Rare</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="uncommon"
+                      name="uncommon"
+                      value="uncommon"
+                    />
+                    <label for="uncommon">Uncommon</label>
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      id="common"
+                      name="common"
+                      value="common"
+                    />
+                    <label for="common">Common</label>
+                  </div>
                 </div>
               </div>
             </fieldset>
@@ -274,6 +294,54 @@
           </form>
         </div>
       </dialog>
+      <div id="welcome">
+        <h3>Welcome!</h3>
+        <p>
+          Here are the key Standard deck building rules in Magic the Gathering:
+        </p>
+        <h4>Deck Size:</h4>
+        <ul>
+          <li>
+            Your main deck must contain a minimum of 60 cards. It's generally
+            recommended to have exactly 60 cards for optimal performance.
+          </li>
+          <li>
+            You can have an optional sideboard of up to 15 cards. These cards
+            are not used during the game itself but can be swapped in and out of
+            your main deck between matches in a best-of-three format.
+          </li>
+        </ul>
+        <h4>Card Limits:</h4>
+        <ul>
+          <li>
+            You cannot have more than 4 copies of any card with the same name in
+            your entire 75-card deck (main deck + sideboard), except for basic
+            lands.
+          </li>
+          <li>
+            Basic lands (Plains, Island, Swamp, Mountain, Forest) are the only
+            cards you can have more than 4 copies of.
+          </li>
+        </ul>
+        <h4>Standard Legal Sets:</h4>
+        <ul>
+          <li>
+            Standard is a rotating format, meaning only cards from the most
+            recent sets are legal for play.
+          </li>
+          <li>
+            Four times a year, with the release of the fall set, the four oldest
+            Standard sets rotate out.
+          </li>
+          <li>
+            You can find the currently legal sets on the official Wizards of the
+            Coast website:
+            <a href="https://magic.wizards.com/en/formats/standard"
+              >Wizards of the Coast</a
+            >
+          </li>
+        </ul>
+      </div>
       <div class="table-container">
         <img src="images\others\loading.svg" alt="loading" id="loader-image" />
         <h2 id="set-name"></h2>
@@ -283,11 +351,11 @@
           </caption>
           <thead>
             <tr>
-              <th>Card Color</th>
-              <th>Card Name</th>
+              <th>Color</th>
+              <th>Name</th>
               <th>Mana Value</th>
               <th>Mana Cost</th>
-              <th>Card Type</th>
+              <th>Type</th>
               <th>Oracle Text</th>
               <th>Power</th>
               <th>Toughness</th>
@@ -296,60 +364,9 @@
           </thead>
           <tbody id="card-display-table"></tbody>
         </table>
-        <button class="table-btn" id="prev-btn">Prev</button>
-        <button class="table-btn" id="next-btn">Next</button>
       </div>
       <div class="expanded-info-card"></div>
       <div id="deck-display-area">
-        <div id="welcome">
-          <h3>Welcome!</h3>
-          <p>
-            Here are the key Standard deck building rules in Magic the
-            Gathering:
-          </p>
-          <h4>Deck Size:</h4>
-          <ul>
-            <li>
-              Your main deck must contain a minimum of 60 cards. It's generally
-              recommended to have exactly 60 cards for optimal performance.
-            </li>
-            <li>
-              You can have an optional sideboard of up to 15 cards. These cards
-              are not used during the game itself but can be swapped in and out
-              of your main deck between matches in a best-of-three format.
-            </li>
-          </ul>
-          <h4>Card Limits:</h4>
-          <ul>
-            <li>
-              You cannot have more than 4 copies of any card with the same name
-              in your entire 75-card deck (main deck + sideboard), except for
-              basic lands.
-            </li>
-            <li>
-              Basic lands (Plains, Island, Swamp, Mountain, Forest) are the only
-              cards you can have more than 4 copies of.
-            </li>
-          </ul>
-          <h4>Standard Legal Sets:</h4>
-          <ul>
-            <li>
-              Standard is a rotating format, meaning only cards from the most
-              recent sets are legal for play.
-            </li>
-            <li>
-              Four times a year, with the release of the fall set, the four
-              oldest Standard sets rotate out.
-            </li>
-            <li>
-              You can find the currently legal sets on the official Wizards of
-              the Coast website:
-              <a href="https://magic.wizards.com/en/formats/standard"
-                >https://magic.wizards.com/en/formats/standard</a
-              >
-            </li>
-          </ul>
-        </div>
         <div id="deck-display-left"></div>
         <div id="deck-display-right"></div>
       </div>
