@@ -850,8 +850,6 @@ headers.forEach((header, index) => {
 });
 
 function sortTable(columnIndex, ascending) {
-  let table = "";
-  let rows = [];
   table = document.getElementById("card-list-table");
   rows = Array.from(table.rows).slice(1);
 
@@ -874,3 +872,17 @@ function sortTable(columnIndex, ascending) {
     table.appendChild(row);
   });
 }
+
+const scrollToTopBtn = document.getElementById("back-to-top");
+
+window.addEventListener("scroll", function () {
+  if (window.scrollY > 750) {
+    scrollToTopBtn.style.display = "block";
+  } else {
+    scrollToTopBtn.style.display = "none";
+  }
+});
+
+scrollToTopBtn.addEventListener("click", function () {
+  window.scrollTo({ top: 0, behavior: "smooth" });
+});
