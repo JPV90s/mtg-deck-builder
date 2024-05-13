@@ -15,7 +15,7 @@ const deckDisplayArea = document.getElementById("deck-display-area");
 const cardName = document.querySelectorAll(".card-name");
 const cardSetTitle = document.getElementById("set-name");
 
-let deck = [];
+let deck = JSON.parse(localStorage.getItem("deckData")) || [];
 
 const manaSymbolImages = {
   "{W}": "images/manaColors/manaWhite.png",
@@ -526,9 +526,11 @@ function addCardToDeck(card) {
         cardType.split(" — ")[0] === "Basic Land"
       ) {
         deck[cardIndex].quantity++;
+        localStorage.setItem("deckData", JSON.stringify(deck));
         alert("Card added to deck: " + card.name);
       } else if (deck[cardIndex].quantity < 4) {
         deck[cardIndex].quantity++;
+        localStorage.setItem("deckData", JSON.stringify(deck));
         alert("Card added to deck: " + card.name);
       } else if (deck[cardIndex].quantity >= 4) {
         alert("Can only add up to four copies");
@@ -543,6 +545,7 @@ function addCardToDeck(card) {
         color: cardColor,
       });
       alert("Card added to deck: " + card.name);
+      localStorage.setItem("deckData", JSON.stringify(deck));
     }
   });
 }
@@ -555,15 +558,18 @@ function removeCardFromDeck(card) {
     if (cardIndex !== -1) {
       if (deck[cardIndex].quantity === 1) {
         deck.splice(cardIndex, 1);
+        localStorage.setItem("deckData", JSON.stringify(deck));
         alert("Card removed from deck");
       } else {
         deck[cardIndex].quantity--;
+        localStorage.setItem("deckData", JSON.stringify(deck));
         alert("Card removed from deck");
       }
     } else {
       alert("Card not in deck");
     }
   });
+  localStorage.setItem("data", JSON.stringify(deck));
 }
 
 function showDeck(deckData) {
@@ -664,6 +670,7 @@ function showDeck(deckData) {
     alert("Deck resetted");
     displayElement(welcomeMsg);
     deck = [];
+    localStorage.setItem("deckData", JSON.stringify(deck));
   });
 
   for (const type in deckTypesCards) {

@@ -551,6 +551,12 @@ footer {
     background-color: initial;
     color: initial;
   }
+
+  #card-image1,
+  #card-image2 {
+    height: 350px;
+  }
+
   .expanded-right {
     padding: 10px;
     max-width: 85vw;
