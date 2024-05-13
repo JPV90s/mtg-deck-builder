@@ -655,6 +655,17 @@ function showDeck(deckData) {
     return acc;
   }, {});
 
+  const resetDeckBtn = document.createElement("button");
+  resetDeckBtn.innerText = "Reset Deck";
+  resetDeckBtn.classList.add("reset-deck-btn");
+  deckDisplayLeft.appendChild(resetDeckBtn);
+  resetDeckBtn.addEventListener("click", () => {
+    hideElement(deckDisplayArea);
+    alert("Deck resetted");
+    displayElement(welcomeMsg);
+    deck = [];
+  });
+
   for (const type in deckTypesCards) {
     if (
       deckTypesCards.hasOwnProperty(type) &&
@@ -876,7 +887,7 @@ function sortTable(columnIndex, ascending) {
 const scrollToTopBtn = document.getElementById("back-to-top");
 
 window.addEventListener("scroll", function () {
-  if (window.scrollY > 750) {
+  if (window.scrollY > 1000) {
     scrollToTopBtn.style.display = "block";
   } else {
     scrollToTopBtn.style.display = "none";

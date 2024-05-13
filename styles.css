@@ -288,7 +288,6 @@ tr:nth-of-type(2n) {
 .expanded-info-card {
   display: none;
   margin: 20px;
-  gap: 20px;
 }
 
 .expanded-left {
@@ -296,6 +295,13 @@ tr:nth-of-type(2n) {
   flex-direction: column;
   justify-content: flex-start;
   gap: 10px;
+  border: 2px solid gainsboro;
+  border-top: 3px solid black;
+  border-right: 2px solid black;
+  border-radius: 10px;
+  padding: 20px 20px 20px 50px;
+  background-color: whitesmoke;
+  box-shadow: 10px 5px 5px lightgray;
 }
 
 #card-image1,
@@ -354,6 +360,7 @@ tr:nth-of-type(2n) {
   flex-direction: column;
   border: 2px solid gainsboro;
   border-top: 3px solid black;
+  border-left: 1px solid black;
   border-radius: 10px;
   padding: 20px 20px 20px 50px;
   background-color: whitesmoke;
@@ -412,6 +419,21 @@ tr:nth-of-type(2n) {
 
 .type-quantity:last-child {
   border: none;
+}
+
+.reset-deck-btn {
+  padding: 5px;
+  border-radius: 5px;
+  border: 2px solid black;
+  margin-top: 5px;
+  max-width: 120px;
+  box-shadow: 2px 2px 2px #edf2f4;
+}
+
+.reset-deck-btn:hover {
+  cursor: pointer;
+  background-color: #d1345b;
+  color: white;
 }
 
 #deck-display-right {
@@ -521,6 +543,13 @@ footer {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    gap: 5px;
+  }
+  .expanded-left {
+    border: none;
+    padding: 0;
+    background-color: initial;
+    color: initial;
   }
   .expanded-right {
     padding: 10px;
