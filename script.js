@@ -473,7 +473,7 @@ function displayCardInfo(card, container) {
       <p class="card-info-text">${cardData.cardTypeLine}</p>
     </div>
     <div>
-      <p><b>Card Text: </b></p>
+      <p><b>Oracle Text: </b></p>
       <p class="card-info-text">${cardData.cardOracleText}</p>
     </div>
     <div>
