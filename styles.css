@@ -506,7 +506,7 @@ footer {
   }
   td {
     display: block;
-    text-align: left;
+    text-align: justify;
     padding: 5px;
   }
   td::before {
