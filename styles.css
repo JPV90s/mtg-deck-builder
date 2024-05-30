@@ -339,6 +339,7 @@ tr:nth-of-type(2n) {
   border-radius: 10px;
   box-shadow: 10px 5px 5px lightgray;
   cursor: pointer;
+  color: black;
 }
 
 .add-card-deck:hover {
