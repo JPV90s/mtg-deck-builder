@@ -186,7 +186,7 @@ input[type="number"] {
 }
 
 #set-name {
-  text-shadow: 1px 1px lightgray;
+  margin-bottom: 10px;
 }
 
 #card-list-table {
@@ -306,7 +306,8 @@ tr:nth-of-type(2n) {
 
 #card-image1,
 #card-image2 {
-  height: 400px;
+  max-height: 400px;
+  max-width: 300px;
   box-shadow: 10px 5px 5px lightgray;
   border-radius: 5px;
 }
@@ -331,7 +332,8 @@ tr:nth-of-type(2n) {
 .add-card-deck,
 .remove-card-deck,
 .transform {
-  min-width: 30px;
+  width: 250px;
+  margin: 0 auto;
   padding: 5px;
   border: 2px solid black;
   border-radius: 10px;
@@ -369,6 +371,8 @@ tr:nth-of-type(2n) {
 }
 #welcome {
   width: 80vw;
+  border-radius: 10% 10%;
+  padding: 50px;
 }
 
 .card-info-text {
@@ -544,22 +548,23 @@ footer {
     justify-content: center;
     align-items: center;
     gap: 5px;
-  }
-  .expanded-left {
-    border: none;
-    padding: 0;
-    background-color: initial;
-    color: initial;
+    margin: 5px;
   }
 
   #card-image1,
   #card-image2 {
-    height: 350px;
+    margin: 0 auto;
+    max-height: 350px;
+    max-width: 250px;
+  }
+  .expanded-left {
+    width: 85vw;
+    padding: 20px;
   }
 
   .expanded-right {
     padding: 10px;
-    max-width: 85vw;
+    width: 85vw;
   }
 }
 

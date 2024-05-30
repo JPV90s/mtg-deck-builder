@@ -1,6 +1,6 @@
 # MTG Deck Builder - Build Your Magic the Gathering Deck
 
-#### Video Demo: [Link to video]
+#### Video Demo:
 
 #### Description:
 
